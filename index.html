@@ -3,495 +3,642 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TCM Lead System</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<title>TCM Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 :root {
-  --bg:#0a0e1a; --card:#111827; --border:#1e2d45;
-  --accent:#00d4ff; --accent2:#ff6b35; --accent3:#00ff88;
-  --text:#e8f0fe; --muted:#6b7a99;
-}
-body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; }
-
-/* SLIDE SYSTEM */
-.slide { display:none; min-height:100vh; padding:40px 20px 100px; animation:fadeIn 0.6s ease; }
-.slide.active { display:flex; flex-direction:column; align-items:center; justify-content:center; }
-@keyframes fadeIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-
-.inner { max-width:700px; width:100%; }
-
-/* TYPOGRAPHY */
-.big-title {
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(50px,12vw,100px);
-  letter-spacing:4px;
-  line-height:1;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  margin-bottom:15px;
-}
-.slide-title {
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(32px,7vw,56px);
-  letter-spacing:3px;
-  color:var(--accent);
-  margin-bottom:8px;
-}
-.subtitle {
-  font-size:12px; letter-spacing:3px; text-transform:uppercase;
-  color:var(--muted); margin-bottom:30px;
+  --bg:#f0ede8;
+  --surface:#e8e4dd;
+  --dark:#1a1612;
+  --accent:#c8440a;
+  --accent2:#2d6a4f;
+  --text:#1a1612;
+  --muted:#8a8078;
+  --border:#d4cfc8;
+  --card:#faf8f5;
+  --high:#c8440a;
+  --mid:#d4820a;
+  --low:#2d6a4f;
 }
 
-/* CARDS */
-.card {
-  background:var(--card); border:1px solid var(--border);
-  border-radius:14px; padding:20px;
-  position:relative; overflow:hidden;
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
 }
-.card::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:2px;
-  background:linear-gradient(90deg,var(--accent),transparent);
+
+/* GRAIN TEXTURE */
+body::before {
+  content: '';
+  position: fixed;
+  top:0; left:0; width:100%; height:100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.4;
 }
-.card-orange::before { background:linear-gradient(90deg,var(--accent2),transparent); }
-.card-green::before { background:linear-gradient(90deg,var(--accent3),transparent); }
+
+/* LAYOUT */
+.app { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  background: var(--dark);
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.logo {
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 8px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 8px;
+}
+.logo-mark {
+  width: 38px; height: 38px;
+  background: var(--accent);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: white;
+  letter-spacing: 1px;
+}
+.logo-text { font-size: 15px; font-weight: 700; color: white; line-height: 1.2; }
+.logo-sub { font-size: 10px; color: rgba(255,255,255,0.4); font-family: 'DM Mono', monospace; }
+
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px; font-weight: 600;
+  color: rgba(255,255,255,0.5);
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+.nav-item:hover { background: rgba(255,255,255,0.07); color: white; }
+.nav-item.active { background: var(--accent); color: white; }
+.nav-icon { font-size: 16px; width: 20px; text-align: center; }
+
+.nav-section {
+  font-size: 10px; color: rgba(255,255,255,0.25);
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 16px 12px 6px;
+  font-family: 'DM Mono', monospace;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.user-info {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+.user-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: white;
+}
+.user-name { font-size: 12px; font-weight: 600; color: white; }
+.user-role { font-size: 10px; color: rgba(255,255,255,0.4); font-family: 'DM Mono', monospace; }
+
+/* MAIN */
+.main { padding: 30px; overflow-y: auto; }
+
+/* HEADER */
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 28px;
+}
+.header-left h1 { font-size: 26px; font-weight: 800; color: var(--text); }
+.header-left p { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; margin-top: 2px; }
+.header-right { display: flex; gap: 10px; align-items: center; }
+.btn {
+  padding: 9px 18px; border-radius: 8px; font-size: 12px;
+  font-weight: 700; cursor: pointer; border: none;
+  font-family: 'Syne', sans-serif; letter-spacing: 0.5px;
+  transition: all 0.2s;
+}
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: #a33608; }
+.btn-ghost { background: transparent; color: var(--muted); border: 1.5px solid var(--border); }
+.btn-ghost:hover { border-color: var(--text); color: var(--text); }
+
+/* STATS ROW */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+.stat-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 3px;
+}
+.stat-card.s1::after { background: var(--accent); }
+.stat-card.s2::after { background: var(--mid); }
+.stat-card.s3::after { background: var(--low); }
+.stat-card.s4::after { background: #7b5ea7; }
+.stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; font-family: 'DM Mono', monospace; margin-bottom: 10px; }
+.stat-num { font-size: 36px; font-weight: 800; color: var(--text); line-height: 1; }
+.stat-change { font-size: 11px; color: var(--low); font-family: 'DM Mono', monospace; margin-top: 6px; }
 
 /* GRID */
-.g2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.g3 { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
-@media(max-width:500px) { .g2,.g3 { grid-template-columns:1fr; } }
+.grid-main { display: grid; grid-template-columns: 1fr 340px; gap: 16px; }
 
-/* STAT */
-.stat-num {
-  font-family:'Bebas Neue',sans-serif; font-size:44px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  line-height:1;
+/* LEADS TABLE */
+.panel {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
 }
-.stat-label { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-top:4px; }
-
-/* FLOW */
-.flow-item {
-  display:flex; align-items:center; gap:12px;
-  background:var(--card); border:1px solid var(--border);
-  border-radius:10px; padding:14px 16px; margin-bottom:4px;
+.panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1.5px solid var(--border);
 }
-.flow-icon { font-size:24px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; background:var(--bg); border-radius:8px; flex-shrink:0; }
-.flow-text { flex:1; }
-.flow-label { font-size:13px; font-weight:600; color:var(--text); }
-.flow-desc { font-size:11px; color:var(--muted); margin-top:2px; }
-.flow-arrow { text-align:center; color:var(--accent); font-size:16px; padding:2px 0; }
-.badge { font-size:10px; padding:3px 8px; border-radius:20px; font-weight:600; text-transform:uppercase; letter-spacing:1px; flex-shrink:0; }
-.badge-a { background:rgba(0,255,136,0.15); color:var(--accent3); border:1px solid rgba(0,255,136,0.3); }
-.badge-m { background:rgba(255,107,53,0.15); color:var(--accent2); border:1px solid rgba(255,107,53,0.3); }
+.panel-title { font-size: 14px; font-weight: 700; }
+.panel-action { font-size: 11px; color: var(--accent); cursor: pointer; font-weight: 600; }
 
-/* WHATSAPP */
-.wa { background:#075e54; border-radius:14px; padding:16px; max-width:380px; margin:0 auto; }
-.wa-head { display:flex; align-items:center; gap:10px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px; margin-bottom:10px; }
-.wa-av { width:34px; height:34px; border-radius:50%; background:var(--accent2); display:flex; align-items:center; justify-content:center; font-size:16px; }
-.wa-name { font-weight:600; font-size:13px; }
-.wa-status { font-size:10px; color:rgba(255,255,255,0.5); }
-.wa-msg { background:#128c7e; border-radius:10px 10px 10px 0; padding:12px; font-size:12px; line-height:1.7; }
-.wa-time { text-align:right; font-size:10px; color:rgba(255,255,255,0.4); margin-top:5px; }
-
-/* COST */
-.cost-row { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border); }
-.cost-row:last-child { border-bottom:none; }
-.cost-val { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:1px; }
-.c-free { color:var(--accent3); }
-.c-low { color:var(--accent); }
-.c-high { color:var(--accent2); }
-
-/* TIMELINE */
-.tl-item { display:flex; gap:16px; margin-bottom:20px; }
-.tl-left { display:flex; flex-direction:column; align-items:center; }
-.tl-dot { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:15px; color:var(--bg); flex-shrink:0; }
-.tl-line { width:2px; flex:1; background:var(--border); margin:4px 0; min-height:20px; }
-.tl-week { font-size:10px; color:var(--accent); text-transform:uppercase; letter-spacing:2px; margin-bottom:4px; }
-.tl-task { font-size:14px; font-weight:600; color:var(--text); margin-bottom:2px; }
-.tl-detail { font-size:12px; color:var(--muted); }
-
-/* WAVE */
-.wave { display:flex; align-items:center; gap:3px; justify-content:center; height:50px; margin:20px auto; }
-.wb { width:4px; border-radius:2px; background:linear-gradient(180deg,var(--accent),var(--accent2)); animation:wv var(--d,0.5s) infinite alternate; }
-@keyframes wv { from{height:6px;opacity:0.3} to{height:var(--h,30px);opacity:1} }
-
-/* LOGO */
-.logo-box {
-  width:100px; height:100px; border-radius:24px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  display:flex; align-items:center; justify-content:center;
-  font-family:'Bebas Neue',sans-serif; font-size:36px; color:var(--bg);
-  margin:0 auto 25px;
-  box-shadow:0 0 40px rgba(0,212,255,0.4);
-  animation:glow 2s infinite alternate;
+/* FILTER TABS */
+.tabs { display: flex; gap: 4px; padding: 14px 20px; border-bottom: 1.5px solid var(--border); }
+.tab {
+  padding: 6px 14px; border-radius: 20px; font-size: 11px;
+  font-weight: 700; cursor: pointer; border: 1.5px solid transparent;
+  transition: all 0.2s; font-family: 'Syne', sans-serif;
 }
-@keyframes glow { from{box-shadow:0 0 20px rgba(0,212,255,0.3)} to{box-shadow:0 0 60px rgba(0,212,255,0.7)} }
+.tab.active { background: var(--dark); color: white; }
+.tab:not(.active) { color: var(--muted); border-color: var(--border); }
+.tab:not(.active):hover { border-color: var(--text); color: var(--text); }
 
-/* GLOW LINE */
-.glow-line { height:1px; background:linear-gradient(90deg,transparent,var(--accent),transparent); margin:25px auto; max-width:400px; }
-
-/* TAG */
-.tag { display:inline-block; border-radius:20px; padding:4px 12px; font-size:11px; margin:3px; border:1px solid; }
-.tag-blue { background:rgba(0,212,255,0.1); color:var(--accent); border-color:rgba(0,212,255,0.3); }
-.tag-orange { background:rgba(255,107,53,0.1); color:var(--accent2); border-color:rgba(255,107,53,0.3); }
-
-/* NAV */
-.nav {
-  position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
-  display:flex; align-items:center; gap:10px; z-index:100;
-  background:rgba(10,14,26,0.9); backdrop-filter:blur(10px);
-  padding:10px 16px; border-radius:50px;
-  border:1px solid var(--border);
+/* LEAD ROWS */
+.lead-row {
+  display: grid;
+  grid-template-columns: 24px 1fr 100px 90px 80px 120px;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+  cursor: pointer;
 }
-.btn { background:var(--card); border:1px solid var(--border); color:var(--text); padding:8px 18px; border-radius:25px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:12px; transition:all 0.2s; }
-.btn:hover { border-color:var(--accent); color:var(--accent); }
-.btn-p { background:linear-gradient(135deg,var(--accent),#0099cc); border:none; color:var(--bg); font-weight:600; }
-.btn-p:hover { opacity:0.9; color:var(--bg); }
-.dots { display:flex; gap:5px; align-items:center; }
-.dot { width:6px; height:6px; border-radius:50%; background:var(--border); cursor:pointer; transition:all 0.3s; }
-.dot.on { background:var(--accent); width:18px; border-radius:3px; }
+.lead-row:last-child { border-bottom: none; }
+.lead-row:hover { background: var(--surface); }
 
-/* PROGRESS */
-.prog { position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width 0.4s; z-index:100; box-shadow:0 0 8px var(--accent); }
-.step-c { position:fixed; top:15px; right:15px; font-size:12px; color:var(--muted); z-index:100; letter-spacing:1px; }
-.step-c b { color:var(--accent); font-size:16px; font-family:'Bebas Neue',sans-serif; }
+.lead-header-row {
+  display: grid;
+  grid-template-columns: 24px 1fr 100px 90px 80px 120px;
+  gap: 12px;
+  padding: 10px 20px;
+  background: var(--surface);
+  border-bottom: 1.5px solid var(--border);
+}
+.col-h { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-family: 'DM Mono', monospace; font-weight: 500; }
+
+.prio-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.prio-high { background: var(--high); box-shadow: 0 0 6px rgba(200,68,10,0.5); }
+.prio-mid { background: var(--mid); }
+.prio-low { background: var(--low); }
+
+.lead-name { font-size: 13px; font-weight: 700; }
+.lead-detail { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; margin-top: 2px; }
+
+.badge-dest {
+  font-size: 10px; font-weight: 700;
+  padding: 4px 10px; border-radius: 20px;
+  text-transform: uppercase; letter-spacing: 1px;
+  display: inline-block;
+}
+.dest-mar { background: rgba(200,68,10,0.12); color: var(--accent); }
+.dest-egy { background: rgba(45,106,79,0.12); color: var(--accent2); }
+.dest-tun { background: rgba(123,94,167,0.15); color: #7b5ea7; }
+
+.badge-lang {
+  font-size: 10px; font-family: 'DM Mono', monospace;
+  color: var(--muted);
+}
+
+.badge-status {
+  font-size: 10px; font-weight: 700;
+  padding: 4px 10px; border-radius: 20px;
+  display: inline-block; letter-spacing: 0.5px;
+}
+.status-new { background: rgba(200,68,10,0.1); color: var(--accent); }
+.status-sent { background: rgba(45,106,79,0.1); color: var(--accent2); }
+.status-wait { background: rgba(212,130,10,0.1); color: var(--mid); }
+
+.action-btn {
+  background: var(--dark); color: white;
+  border: none; border-radius: 7px;
+  padding: 7px 14px; font-size: 11px;
+  font-weight: 700; cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.action-btn:hover { background: var(--accent); }
+.action-btn.sent { background: transparent; color: var(--low); border: 1.5px solid rgba(45,106,79,0.3); }
+.action-btn.waiting { background: transparent; color: var(--mid); border: 1.5px solid rgba(212,130,10,0.3); }
+
+/* RIGHT PANEL */
+.right-col { display: flex; flex-direction: column; gap: 16px; }
+
+/* DETAIL PANEL */
+.detail-panel {
+  background: var(--dark);
+  border-radius: 14px;
+  padding: 20px;
+  color: white;
+}
+.detail-title { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 2px; font-family: 'DM Mono', monospace; margin-bottom: 16px; }
+.detail-name { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+.detail-sub { font-size: 11px; color: rgba(255,255,255,0.5); font-family: 'DM Mono', monospace; margin-bottom: 20px; }
+.detail-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.detail-row:last-of-type { border-bottom: none; }
+.detail-key { font-size: 11px; color: rgba(255,255,255,0.4); font-family: 'DM Mono', monospace; }
+.detail-val { font-size: 12px; font-weight: 600; color: white; }
+.detail-val.high { color: #ff6b3d; }
+.detail-val.green { color: #56cfb2; }
+
+.tips-area {
+  margin-top: 16px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 12px;
+}
+.tips-label { font-size: 10px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 2px; font-family: 'DM Mono', monospace; margin-bottom: 8px; }
+.tips-input {
+  width: 100%; background: transparent; border: none;
+  color: white; font-family: 'Syne', sans-serif; font-size: 12px;
+  resize: none; outline: none; line-height: 1.6;
+  min-height: 60px;
+}
+.tips-input::placeholder { color: rgba(255,255,255,0.2); }
+
+.send-btn {
+  width: 100%; margin-top: 14px;
+  background: var(--accent);
+  color: white; border: none;
+  border-radius: 10px; padding: 13px;
+  font-size: 13px; font-weight: 800;
+  cursor: pointer; font-family: 'Syne', sans-serif;
+  letter-spacing: 1px; text-transform: uppercase;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.send-btn:hover { background: #a33608; transform: translateY(-1px); }
+
+.upload-area {
+  border: 2px dashed rgba(255,255,255,0.15);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: all 0.2s;
+}
+.upload-area:hover { border-color: var(--accent); background: rgba(200,68,10,0.05); }
+.upload-icon { font-size: 24px; margin-bottom: 6px; }
+.upload-text { font-size: 11px; color: rgba(255,255,255,0.4); }
+.upload-sub { font-size: 10px; color: rgba(255,255,255,0.2); font-family: 'DM Mono', monospace; margin-top: 3px; }
+
+/* MINI STATS */
+.mini-stats {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+.mini-title { font-size: 12px; font-weight: 700; margin-bottom: 14px; }
+.mini-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.mini-row:last-child { border-bottom: none; }
+.mini-label { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.mini-val { font-size: 13px; font-weight: 700; font-family: 'DM Mono', monospace; }
+
+/* NOTIFICATION DOT */
+.notif {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--accent); color: white;
+  font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin-left: auto;
+}
+
+/* PULSE ANIMATION */
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.live { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--low); font-family: 'DM Mono', monospace; }
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--low); animation: pulse 2s infinite; }
+
+@media(max-width:900px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .stats { grid-template-columns: repeat(2,1fr); }
+  .grid-main { grid-template-columns: 1fr; }
+  .lead-row, .lead-header-row { grid-template-columns: 20px 1fr 90px; }
+  .lead-row > *:nth-child(n+4), .lead-header-row > *:nth-child(n+4) { display: none; }
+}
 </style>
 </head>
 <body>
+<div class="app">
 
-<div class="prog" id="prog"></div>
-<div class="step-c"><b id="cs">1</b> / 8</div>
-
-<!-- SLIDE 1 -->
-<div class="slide active" id="s0">
-<div class="inner" style="text-align:center">
-  <div class="logo-box">TCM</div>
-  <div class="big-title">LEAD SYSTEM</div>
-  <div class="subtitle">Travel Concept Morocco × Samir</div>
-  <div class="glow-line"></div>
-  <p style="color:var(--muted);font-size:14px;line-height:1.8;max-width:480px;margin:0 auto 30px">
-    Ein intelligenter KI-Agent, der den kompletten Lead-Prozess automatisiert — von Facebook bis zum Kunden.
-  </p>
-  <div class="g3">
-    <div class="card" style="text-align:center;padding:20px">
-      <div class="stat-num">95%</div>
-      <div class="stat-label">Automatisiert</div>
-    </div>
-    <div class="card" style="text-align:center;padding:20px">
-      <div class="stat-num">2MIN</div>
-      <div class="stat-label">Pro Lead</div>
-    </div>
-    <div class="card" style="text-align:center;padding:20px">
-      <div class="stat-num">€5</div>
-      <div class="stat-label">Pro Monat</div>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- SLIDE 2 -->
-<div class="slide" id="s1">
-<div class="inner">
-  <div style="text-align:center;margin-bottom:25px">
-    <div class="slide-title">Das Problem</div>
-    <div class="subtitle">Heute vs. Mit System</div>
-  </div>
-  <div class="g2">
-    <div class="card card-orange">
-      <div style="font-size:28px;margin-bottom:10px">😤</div>
-      <div style="font-size:13px;font-weight:600;color:var(--accent2);margin-bottom:10px">HEUTE</div>
-      <div style="font-size:12px;color:var(--muted);line-height:2.2">
-        📋 Lead manuell lesen<br>
-        ✈️ Google Flights suchen<br>
-        📸 Screenshot machen<br>
-        🤖 ChatGPT + Prompt<br>
-        🖼️ PNG → PDF konvertieren<br>
-        📧 E-Mail manuell<br>
-        📱 WhatsApp manuell<br>
-        🔁 × 30 Leads/Tag
-      </div>
-      <div style="margin-top:14px;font-family:'Bebas Neue';font-size:22px;color:var(--accent2)">⏱️ 10–15 MIN PRO LEAD</div>
-    </div>
-    <div class="card card-green">
-      <div style="font-size:28px;margin-bottom:10px">🚀</div>
-      <div style="font-size:13px;font-weight:600;color:var(--accent3);margin-bottom:10px">MIT SYSTEM</div>
-      <div style="font-size:12px;color:var(--muted);line-height:2.2">
-        ✅ Lead kommt automatisch<br>
-        ✈️ Flug suchen (2 min)<br>
-        📱 Angebot hochladen<br>
-        ✏️ Tipps tippen (30 sek)<br>
-        ▶️ SENDEN drücken<br>
-        🤖 Alles andere: AUTO<br>
-        <br>
-        <br>
-      </div>
-      <div style="margin-top:14px;font-family:'Bebas Neue';font-size:22px;color:var(--accent3)">⚡ 2 MIN PRO LEAD</div>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- SLIDE 3 -->
-<div class="slide" id="s2">
-<div class="inner">
-  <div style="text-align:center;margin-bottom:20px">
-    <div class="slide-title">Der Workflow</div>
-    <div class="subtitle">Schritt für Schritt</div>
-  </div>
-  <div class="flow-item"><div class="flow-icon">📱</div><div class="flow-text"><div class="flow-label">Lead kommt auf Facebook an</div><div class="flow-desc">Name, Sprache, Zielgebiet, Budget — automatisch gelesen</div></div><span class="badge badge-a">AUTO</span></div>
-  <div class="flow-arrow">↓</div>
-  <div class="flow-item"><div class="flow-icon">🧠</div><div class="flow-text"><div class="flow-label">Agent analysiert & priorisiert</div><div class="flow-desc">Familie 6P = 🔴 HOCH | Single = 🟢 NORMAL</div></div><span class="badge badge-a">AUTO</span></div>
-  <div class="flow-arrow">↓</div>
-  <div class="flow-item"><div class="flow-icon">💬</div><div class="flow-text"><div class="flow-label">WhatsApp an Hicham + Samir</div><div class="flow-desc">LEAD-001 | Müller | Marokko | Deutsch | 🔴 HOCH</div></div><span class="badge badge-a">AUTO</span></div>
-  <div class="flow-arrow">↓</div>
-  <div class="flow-item"><div class="flow-icon">✈️</div><div class="flow-text"><div class="flow-label">Du suchst den Flug (Google Flights)</div><div class="flow-desc">2 Minuten — deine Expertise — volle Kontrolle</div></div><span class="badge badge-m">MANUELL</span></div>
-  <div class="flow-arrow">↓</div>
-  <div class="flow-item"><div class="flow-icon">📊</div><div class="flow-text"><div class="flow-label">Dashboard: Angebot + Tipps → SENDEN</div><div class="flow-desc">PNG hochladen + Tipps tippen → 1 Klick</div></div><span class="badge badge-m">MANUELL</span></div>
-  <div class="flow-arrow">↓</div>
-  <div class="flow-item"><div class="flow-icon">🎙️</div><div class="flow-text"><div class="flow-label">Voice-Nachricht generiert</div><div class="flow-desc">Deine Stimme — in Kundensprache (DE/NL/FR)</div></div><span class="badge badge-a">AUTO</span></div>
-  <div class="flow-arrow">↓</div>
-  <div class="flow-item"><div class="flow-icon">📤</div><div class="flow-text"><div class="flow-label">PDF + Voice → Kunde</div><div class="flow-desc">Per WhatsApp + E-Mail automatisch gesendet</div></div><span class="badge badge-a">AUTO</span></div>
-  <div class="flow-arrow">↓</div>
-  <div class="flow-item"><div class="flow-icon">📋</div><div class="flow-text"><div class="flow-label">Protokolliert in Google Sheets</div><div class="flow-desc">Status | Marge | Termin | alles gespeichert</div></div><span class="badge badge-a">AUTO</span></div>
-</div>
-</div>
-
-<!-- SLIDE 4 -->
-<div class="slide" id="s3">
-<div class="inner" style="text-align:center">
-  <div class="slide-title">WhatsApp Preview</div>
-  <div class="subtitle">Was du vom Agent bekommst</div>
-  <div class="wa" style="margin-top:20px;text-align:left">
-    <div class="wa-head">
-      <div class="wa-av">🤖</div>
-      <div><div class="wa-name">TCM Agent</div><div class="wa-status">● Online</div></div>
-    </div>
-    <div class="wa-msg">
-      🔴 <strong>HOCH PRIORITÄT</strong><br><br>
-      <strong>LEAD-2026-0601-007</strong><br>
-      👤 Familie Müller (6 Personen)<br>
-      🌍 Marokko — Marrakesch + Sahara<br>
-      📅 2 Wochen | Juli 2026<br>
-      💰 Budget: €8.000<br>
-      🗣️ Sprache: Deutsch<br>
-      📧 mueller@gmail.com<br>
-      📱 +49 171 234 5678<br><br>
-      <em style="color:rgba(255,255,255,0.6);font-size:11px">Zuständig: Hicham — Marokko</em>
-    </div>
-    <div class="wa-time">14:32 ✓✓</div>
-  </div>
-  <div style="margin-top:25px" class="g3">
-    <div class="card" style="text-align:center;padding:15px"><div style="font-size:28px">🔴</div><div class="stat-label" style="margin-top:8px">Hoch Priorität</div></div>
-    <div class="card" style="text-align:center;padding:15px"><div style="font-size:28px">🟡</div><div class="stat-label" style="margin-top:8px">Mittel</div></div>
-    <div class="card" style="text-align:center;padding:15px"><div style="font-size:28px">🟢</div><div class="stat-label" style="margin-top:8px">Normal</div></div>
-  </div>
-</div>
-</div>
-
-<!-- SLIDE 5 -->
-<div class="slide" id="s4">
-<div class="inner" style="text-align:center">
-  <div class="slide-title">Dein Dashboard</div>
-  <div class="subtitle">Alles auf einen Blick — Handy oder PC</div>
-  <div style="margin-top:20px;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;max-width:480px;margin:20px auto 0">
-    <div style="background:#0d1520;padding:10px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--border)">
-      <div style="width:10px;height:10px;border-radius:50%;background:#ff5f56"></div>
-      <div style="width:10px;height:10px;border-radius:50%;background:#ffbd2e"></div>
-      <div style="width:10px;height:10px;border-radius:50%;background:#27c93f"></div>
-      <div style="font-size:11px;color:var(--muted);margin-left:auto">TCM Lead Dashboard</div>
-    </div>
-    <div style="padding:14px">
-      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">🔴 Neu (3 Leads)</div>
-      <div style="display:flex;align-items:center;gap:10px;background:var(--bg);border-radius:8px;padding:10px;margin-bottom:6px;border:1px solid var(--border)">
-        <div style="width:8px;height:8px;border-radius:50%;background:#ff4444;flex-shrink:0"></div>
-        <div style="flex:1"><div style="font-size:12px;font-weight:600">Müller Familie — Marokko</div><div style="font-size:10px;color:var(--muted)">6P | 2 Wochen | €8.000 | Deutsch</div></div>
-        <button style="background:linear-gradient(135deg,var(--accent),#0099cc);color:var(--bg);border:none;border-radius:6px;padding:6px 10px;font-size:10px;font-weight:600;cursor:pointer">▶ SENDEN</button>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;background:var(--bg);border-radius:8px;padding:10px;margin-bottom:6px;border:1px solid var(--border)">
-        <div style="width:8px;height:8px;border-radius:50%;background:#ffaa00;flex-shrink:0"></div>
-        <div style="flex:1"><div style="font-size:12px;font-weight:600">Van der Berg — Marokko</div><div style="font-size:10px;color:var(--muted)">2P | 1 Woche | €3.500 | Holländisch</div></div>
-        <button style="background:linear-gradient(135deg,var(--accent),#0099cc);color:var(--bg);border:none;border-radius:6px;padding:6px 10px;font-size:10px;font-weight:600;cursor:pointer">▶ SENDEN</button>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;background:var(--bg);border-radius:8px;padding:10px;border:1px solid var(--border)">
-        <div style="width:8px;height:8px;border-radius:50%;background:#00cc66;flex-shrink:0"></div>
-        <div style="flex:1"><div style="font-size:12px;font-weight:600">Dupont — Ägypten (Samir)</div><div style="font-size:10px;color:var(--muted)">4P | 10 Tage | €5.000 | Französisch</div></div>
-        <button style="background:linear-gradient(135deg,var(--accent2),#cc4400);color:white;border:none;border-radius:6px;padding:6px 10px;font-size:10px;font-weight:600;cursor:pointer">▶ SAMIR</button>
-      </div>
-      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:12px 0 6px">✅ Heute gesendet (7)</div>
-      <div style="background:var(--bg);border-radius:6px;padding:8px 10px;font-size:11px;color:var(--muted)">Schmidt | Hassan | Martin | Weber | Bauer | Klein | Jung</div>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- SLIDE 6 -->
-<div class="slide" id="s5">
-<div class="inner" style="text-align:center">
-  <div class="slide-title">Voice Kloning</div>
-  <div class="subtitle">Deine Stimme — in jeder Sprache</div>
-  <div class="g2" style="margin-top:20px">
-    <div class="card" style="text-align:left">
-      <div style="font-size:28px;margin-bottom:10px">🎙️</div>
-      <div style="font-size:13px;font-weight:600;color:var(--accent);margin-bottom:8px">HICHAM</div>
-      <div style="font-size:12px;color:var(--muted);line-height:1.9">
-        15 Sek. auf Deutsch sprechen<br>
-        → ElevenLabs klont Stimme<br>
-        → Klingt auf DE & FR<br>
-        → Menschlich, kein Roboter
-      </div>
-      <div style="margin-top:12px">
-        <span class="tag tag-blue">🇩🇪 Deutsch</span>
-        <span class="tag tag-blue">🇫🇷 Français</span>
-      </div>
-    </div>
-    <div class="card" style="text-align:left">
-      <div style="font-size:28px;margin-bottom:10px">🎙️</div>
-      <div style="font-size:13px;font-weight:600;color:var(--accent2);margin-bottom:8px">SAMIR</div>
-      <div style="font-size:12px;color:var(--muted);line-height:1.9">
-        15 Sek. auf Holländisch sprechen<br>
-        → ElevenLabs klont Stimme<br>
-        → Klingt auf NL & EN<br>
-        → Authentisch, kein Akzent
-      </div>
-      <div style="margin-top:12px">
-        <span class="tag tag-orange">🇳🇱 Nederlands</span>
-        <span class="tag tag-orange">🇬🇧 English</span>
-      </div>
-    </div>
-  </div>
-  <div class="wave" style="margin-top:25px">
-    <div class="wb" style="--d:0.4s;--h:12px"></div>
-    <div class="wb" style="--d:0.6s;--h:35px"></div>
-    <div class="wb" style="--d:0.3s;--h:48px"></div>
-    <div class="wb" style="--d:0.7s;--h:38px"></div>
-    <div class="wb" style="--d:0.5s;--h:50px"></div>
-    <div class="wb" style="--d:0.4s;--h:28px"></div>
-    <div class="wb" style="--d:0.6s;--h:42px"></div>
-    <div class="wb" style="--d:0.3s;--h:18px"></div>
-    <div class="wb" style="--d:0.7s;--h:46px"></div>
-    <div class="wb" style="--d:0.5s;--h:32px"></div>
-    <div class="wb" style="--d:0.4s;--h:38px"></div>
-    <div class="wb" style="--d:0.6s;--h:22px"></div>
-  </div>
-  <p style="font-size:12px;color:var(--muted);font-style:italic;max-width:440px;margin:0 auto">
-    "Hallo Herr Müller, vielen Dank für Ihr Interesse. Wir haben ein wunderschönes Angebot für Ihre Familie erstellt. Bitte teilen Sie uns mit, wann Sie Zeit für ein Gespräch haben — Samir ruft Sie gerne an..."
-  </p>
-</div>
-</div>
-
-<!-- SLIDE 7 -->
-<div class="slide" id="s6">
-<div class="inner">
-  <div style="text-align:center;margin-bottom:20px">
-    <div class="slide-title">Was es kostet</div>
-    <div class="subtitle">Claude Code vs. Developer</div>
-  </div>
-  <div class="card" style="margin-bottom:15px">
-    <div style="font-size:13px;font-weight:600;color:var(--accent3);margin-bottom:14px">✅ Mit Claude Code</div>
-    <div class="cost-row"><div style="font-size:13px">🏗️ System bauen</div><div class="cost-val c-free">€0</div></div>
-    <div class="cost-row"><div style="font-size:13px">🖥️ Server (dein PC)</div><div class="cost-val c-free">€0</div></div>
-    <div class="cost-row"><div style="font-size:13px">🤖 OpenAI/Claude API</div><div class="cost-val c-low">€2–5/mo</div></div>
-    <div class="cost-row"><div style="font-size:13px">🎙️ ElevenLabs Voice</div><div class="cost-val c-low">2h/mo ✓</div></div>
-    <div class="cost-row"><div style="font-size:13px">💬 WhatsApp Business API</div><div class="cost-val c-low">€0.05/msg</div></div>
-    <div class="cost-row" style="border-top:1px solid var(--accent);margin-top:5px;padding-top:12px"><div style="font-size:14px;font-weight:600">TOTAL PRO MONAT</div><div class="cost-val c-free">~€5–15</div></div>
-  </div>
-  <div class="card card-orange">
-    <div style="display:flex;justify-content:space-between;align-items:center">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-mark">TCM</div>
       <div>
-        <div style="font-size:13px;font-weight:600;color:var(--accent2);margin-bottom:4px">❌ Ein Developer hätte gekostet</div>
-        <div style="font-size:12px;color:var(--muted)">+ €200–500/Monat Wartung + 4–8 Wochen Wartezeit</div>
+        <div class="logo-text">Lead System</div>
+        <div class="logo-sub">v1.0 — DEMO</div>
       </div>
-      <div style="font-family:'Bebas Neue';font-size:32px;color:var(--accent2);flex-shrink:0;margin-left:15px">€5K–15K</div>
     </div>
-  </div>
-</div>
-</div>
 
-<!-- SLIDE 8 -->
-<div class="slide" id="s7">
-<div class="inner">
-  <div style="text-align:center;margin-bottom:20px">
-    <div class="slide-title">Was wir brauchen</div>
-    <div class="subtitle">Von Samir — diese Woche</div>
-  </div>
-  <div class="tl-item">
-    <div class="tl-left"><div class="tl-dot">1</div><div class="tl-line"></div></div>
-    <div><div class="tl-week">🔴 Sofort</div><div class="tl-task">Facebook Lead Ads Zugang</div><div class="tl-detail">API-Token im Meta Business Manager ODER E-Mail-Weiterleitung</div></div>
-  </div>
-  <div class="tl-item">
-    <div class="tl-left"><div class="tl-dot">2</div><div class="tl-line"></div></div>
-    <div><div class="tl-week">🔴 Sofort</div><div class="tl-task">WhatsApp Business API</div><div class="tl-detail">Login-Daten oder API-Token — Agent sendet von Samirs Nummer</div></div>
-  </div>
-  <div class="tl-item">
-    <div class="tl-left"><div class="tl-dot">3</div><div class="tl-line"></div></div>
-    <div><div class="tl-week">🟡 Diese Woche</div><div class="tl-task">15 Sek. Stimm-Aufnahme Holländisch</div><div class="tl-detail">Für Voice-Kloning — klingt nach Samir, nicht nach Roboter</div></div>
-  </div>
-  <div class="tl-item">
-    <div class="tl-left"><div class="tl-dot">4</div></div>
-    <div><div class="tl-week">🟢 Später</div><div class="tl-task">Server (optional)</div><div class="tl-detail">Agent läuft auf Samirs Server 24/7 — nach dem Test</div></div>
-  </div>
-  <div class="glow-line"></div>
-  <div style="text-align:center">
-    <div style="font-family:'Bebas Neue';font-size:36px;color:var(--accent);letter-spacing:3px">BEREIT IN 1–2 WOCHEN</div>
-    <div style="font-size:12px;color:var(--muted);margin-top:6px">Travel Concept Morocco — Powered by Claude Code</div>
-  </div>
-</div>
-</div>
+    <div class="nav-section">Hauptmenü</div>
+    <div class="nav-item active"><span class="nav-icon">📊</span> Dashboard</div>
+    <div class="nav-item"><span class="nav-icon">📥</span> Neue Leads <div class="notif">3</div></div>
+    <div class="nav-item"><span class="nav-icon">📤</span> Gesendet</div>
+    <div class="nav-item"><span class="nav-icon">⏳</span> In Bearbeitung</div>
 
-<!-- NAV -->
-<nav class="nav">
-  <button class="btn" id="pb" onclick="go(-1)">← Zurück</button>
-  <div class="dots" id="dots"></div>
-  <button class="btn btn-p" id="nb" onclick="go(1)">Weiter →</button>
-</nav>
+    <div class="nav-section">Verwaltung</div>
+    <div class="nav-item"><span class="nav-icon">🏨</span> Hotels</div>
+    <div class="nav-item"><span class="nav-icon">✈️</span> Flüge</div>
+    <div class="nav-item"><span class="nav-icon">📋</span> Google Sheet</div>
+    <div class="nav-item"><span class="nav-icon">📈</span> Statistiken</div>
+
+    <div class="nav-section">System</div>
+    <div class="nav-item"><span class="nav-icon">⚙️</span> Einstellungen</div>
+
+    <div class="sidebar-footer">
+      <div class="live"><div class="live-dot"></div> System aktiv</div>
+      <div class="user-info" style="margin-top:12px">
+        <div class="user-avatar">H</div>
+        <div>
+          <div class="user-name">Hicham Fahmi</div>
+          <div class="user-role">TCM Morocco</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-left">
+        <h1>Lead Dashboard</h1>
+        <p>Montag, 1. Juni 2026 — 10:32 Uhr</p>
+      </div>
+      <div class="header-right">
+        <div class="live"><div class="live-dot"></div> Live</div>
+        <button class="btn btn-ghost">Filter</button>
+        <button class="btn btn-primary">+ Neuer Lead</button>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat-card s1">
+        <div class="stat-label">Heute Neu</div>
+        <div class="stat-num">12</div>
+        <div class="stat-change">↑ +4 vs. gestern</div>
+      </div>
+      <div class="stat-card s2">
+        <div class="stat-label">In Bearbeitung</div>
+        <div class="stat-num">5</div>
+        <div class="stat-change">→ 2 warten auf Angebot</div>
+      </div>
+      <div class="stat-card s3">
+        <div class="stat-label">Gesendet</div>
+        <div class="stat-num">7</div>
+        <div class="stat-change">↑ 3 haben geantwortet</div>
+      </div>
+      <div class="stat-card s4">
+        <div class="stat-label">Marge heute</div>
+        <div class="stat-num">€840</div>
+        <div class="stat-change">↑ +€120 vs. gestern</div>
+      </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="grid-main">
+
+      <!-- LEADS TABLE -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Alle Leads heute</div>
+          <div class="panel-action">Alle ansehen →</div>
+        </div>
+        <div class="tabs">
+          <div class="tab active">Alle (12)</div>
+          <div class="tab">🔴 Hoch (3)</div>
+          <div class="tab">🟡 Mittel (5)</div>
+          <div class="tab">🟢 Normal (4)</div>
+        </div>
+        <div class="lead-header-row">
+          <div class="col-h"></div>
+          <div class="col-h">Kunde</div>
+          <div class="col-h">Zielgebiet</div>
+          <div class="col-h">Sprache</div>
+          <div class="col-h">Status</div>
+          <div class="col-h">Aktion</div>
+        </div>
+
+        <div class="lead-row">
+          <div class="prio-dot prio-high"></div>
+          <div><div class="lead-name">Familie Müller</div><div class="lead-detail">6P · 2 Wochen · €8.000</div></div>
+          <div><span class="badge-dest dest-mar">Marokko</span></div>
+          <div class="badge-lang">🇩🇪 DE</div>
+          <div><span class="badge-status status-new">Neu</span></div>
+          <button class="action-btn" onclick="selectLead(this, 'Müller Familie', '6 Personen', 'Marokko', '🇩🇪 Deutsch', '€8.000', 'HOCH')">▶ Senden</button>
+        </div>
+
+        <div class="lead-row">
+          <div class="prio-dot prio-high"></div>
+          <div><div class="lead-name">Van der Berg</div><div class="lead-detail">4P · 10 Tage · €5.500</div></div>
+          <div><span class="badge-dest dest-mar">Marokko</span></div>
+          <div class="badge-lang">🇳🇱 NL</div>
+          <div><span class="badge-status status-new">Neu</span></div>
+          <button class="action-btn" onclick="selectLead(this, 'Van der Berg', '4 Personen', 'Marokko', '🇳🇱 Holländisch', '€5.500', 'HOCH')">▶ Senden</button>
+        </div>
+
+        <div class="lead-row">
+          <div class="prio-dot prio-mid"></div>
+          <div><div class="lead-name">Familie Dupont</div><div class="lead-detail">3P · 1 Woche · €3.200</div></div>
+          <div><span class="badge-dest dest-egy">Ägypten</span></div>
+          <div class="badge-lang">🇫🇷 FR</div>
+          <div><span class="badge-status status-new">Neu</span></div>
+          <button class="action-btn" onclick="selectLead(this, 'Familie Dupont', '3 Personen', 'Ägypten', '🇫🇷 Französisch', '€3.200', 'MITTEL')">▶ Senden</button>
+        </div>
+
+        <div class="lead-row">
+          <div class="prio-dot prio-mid"></div>
+          <div><div class="lead-name">Thomas Schmidt</div><div class="lead-detail">2P · 5 Tage · €2.400</div></div>
+          <div><span class="badge-dest dest-mar">Marokko</span></div>
+          <div class="badge-lang">🇩🇪 DE</div>
+          <div><span class="badge-status status-wait">Wartet</span></div>
+          <button class="action-btn waiting">⏳ Warten</button>
+        </div>
+
+        <div class="lead-row">
+          <div class="prio-dot prio-low"></div>
+          <div><div class="lead-name">Jan de Vries</div><div class="lead-detail">2P · 1 Woche · €2.000</div></div>
+          <div><span class="badge-dest dest-tun">Tunesien</span></div>
+          <div class="badge-lang">🇳🇱 NL</div>
+          <div><span class="badge-status status-sent">Gesendet</span></div>
+          <button class="action-btn sent">✓ Gesendet</button>
+        </div>
+
+        <div class="lead-row">
+          <div class="prio-dot prio-low"></div>
+          <div><div class="lead-name">Marie Martin</div><div class="lead-detail">2P · 5 Tage · €1.800</div></div>
+          <div><span class="badge-dest dest-mar">Marokko</span></div>
+          <div class="badge-lang">🇫🇷 FR</div>
+          <div><span class="badge-status status-sent">Gesendet</span></div>
+          <button class="action-btn sent">✓ Gesendet</button>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COL -->
+      <div class="right-col">
+
+        <!-- DETAIL PANEL -->
+        <div class="detail-panel" id="detail-panel">
+          <div class="detail-title">Lead Details</div>
+          <div class="detail-name" id="d-name">Familie Müller</div>
+          <div class="detail-sub" id="d-sub">LEAD-2026-0601-001</div>
+
+          <div class="detail-row">
+            <span class="detail-key">Personen</span>
+            <span class="detail-val" id="d-persons">6 Personen</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-key">Zielgebiet</span>
+            <span class="detail-val" id="d-dest">Marokko</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-key">Sprache</span>
+            <span class="detail-val" id="d-lang">🇩🇪 Deutsch</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-key">Budget</span>
+            <span class="detail-val green" id="d-budget">€8.000</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-key">Priorität</span>
+            <span class="detail-val high" id="d-prio">🔴 HOCH</span>
+          </div>
+
+          <div class="upload-area" onclick="this.style.borderColor='#c8440a'">
+            <div class="upload-icon">📎</div>
+            <div class="upload-text">Angebot hochladen (PNG/PDF)</div>
+            <div class="upload-sub">Klicken oder reinziehen</div>
+          </div>
+
+          <div class="tips-area">
+            <div class="tips-label">Deine Tipps / Beobachtungen</div>
+            <textarea class="tips-input" placeholder="z.B. Familie lieber Familienzimmer + Suite statt 3 Zimmer..."></textarea>
+          </div>
+
+          <button class="send-btn">
+            ▶ ANGEBOT SENDEN
+          </button>
+        </div>
+
+        <!-- MINI STATS -->
+        <div class="mini-stats">
+          <div class="mini-title">Heute auf einen Blick</div>
+          <div class="mini-row">
+            <span class="mini-label">🇩🇪 Deutsch</span>
+            <span class="mini-val">5 Leads</span>
+          </div>
+          <div class="mini-row">
+            <span class="mini-label">🇳🇱 Holländisch</span>
+            <span class="mini-val">4 Leads</span>
+          </div>
+          <div class="mini-row">
+            <span class="mini-label">🇫🇷 Französisch</span>
+            <span class="mini-val">3 Leads</span>
+          </div>
+          <div class="mini-row">
+            <span class="mini-label">🇲🇦 Marokko</span>
+            <span class="mini-val" style="color:var(--accent)">8 Leads</span>
+          </div>
+          <div class="mini-row">
+            <span class="mini-label">🇪🇬 Ägypten</span>
+            <span class="mini-val" style="color:var(--accent2)">3 Leads</span>
+          </div>
+          <div class="mini-row">
+            <span class="mini-label">🇹🇳 Tunesien</span>
+            <span class="mini-val" style="color:#7b5ea7">1 Lead</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
 
 <script>
-const total = 8;
-let cur = 0;
-const slides = Array.from({length:total}, (_,i) => document.getElementById('s'+i));
-const dotsEl = document.getElementById('dots');
+let leadCount = 1;
+function selectLead(btn, name, persons, dest, lang, budget, prio) {
+  document.getElementById('d-name').textContent = name;
+  document.getElementById('d-sub').textContent = 'LEAD-2026-0601-00' + (++leadCount);
+  document.getElementById('d-persons').textContent = persons;
+  document.getElementById('d-dest').textContent = dest;
+  document.getElementById('d-lang').textContent = lang;
+  document.getElementById('d-budget').textContent = budget;
+  document.getElementById('d-prio').textContent = prio === 'HOCH' ? '🔴 HOCH' : prio === 'MITTEL' ? '🟡 MITTEL' : '🟢 NORMAL';
 
-// Create dots
-for(let i=0;i<total;i++){
-  const d = document.createElement('div');
-  d.className='dot'+(i===0?' on':'');
-  d.onclick=()=>show(i);
-  dotsEl.appendChild(d);
+  // Highlight selected row
+  document.querySelectorAll('.lead-row').forEach(r => r.style.background = '');
+  btn.closest('.lead-row').style.background = 'rgba(200,68,10,0.05)';
+
+  // Scroll to detail on mobile
+  document.getElementById('detail-panel').scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
-function show(n){
-  slides[cur].classList.remove('active');
-  cur = Math.max(0, Math.min(n, total-1));
-  slides[cur].classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-  // Update dots
-  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
-  // Progress
-  document.getElementById('prog').style.width = ((cur+1)/total*100)+'%';
-  document.getElementById('cs').textContent = cur+1;
-  // Buttons
-  document.getElementById('pb').style.opacity = cur===0?'0.3':'1';
-  document.getElementById('nb').textContent = cur===total-1?'🚀 Los geht\'s!':'Weiter →';
-}
-
-function go(dir){ show(cur+dir); }
-
-// Keyboard
-document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowRight'||e.key===' ') go(1);
-  if(e.key==='ArrowLeft') go(-1);
+// Tab switching
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+  });
 });
 
-// Touch swipe
-let tx=0;
-document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
-document.addEventListener('touchend',e=>{
-  const d=tx-e.changedTouches[0].clientX;
-  if(Math.abs(d)>50) go(d>0?1:-1);
+// Nav items
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    item.classList.add('active');
+  });
 });
 
-show(0);
+// Send button
+document.querySelector('.send-btn').addEventListener('click', () => {
+  const name = document.getElementById('d-name').textContent;
+  document.querySelector('.send-btn').textContent = '✓ GESENDET AN ' + name.toUpperCase();
+  document.querySelector('.send-btn').style.background = '#2d6a4f';
+  setTimeout(() => {
+    document.querySelector('.send-btn').innerHTML = '▶ ANGEBOT SENDEN';
+    document.querySelector('.send-btn').style.background = '';
+  }, 3000);
+});
 </script>
 </body>
 </html>
