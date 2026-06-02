@@ -1,530 +1,684 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TCM Lead System</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Sultan Travel – Marrakesch & Agadir</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
 :root {
-  --gold:#c9a84c; --dark:#1a0e00; --warm:#2c1a00;
-  --sand:#f5efe6; --terra:#c1440e; --green:#1b4332;
-  --card:#ffffff; --border:rgba(201,168,76,0.2);
-  --muted:#8b7355; --text:#1a0e00;
+  --navy:   #0d2535;
+  --navy2:  #163344;
+  --gold:   #c8a96e;
+  --gold2:  #e8d5a3;
+  --cream:  #f8f4ed;
+  --sand:   #ede8df;
+  --text:   #1a1a1a;
 }
-body { background:var(--sand); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; display:flex; }
+* { margin:0; padding:0; box-sizing:border-box; }
 
-/* SIDEBAR */
-.sidebar { width:240px; min-height:100vh; background:var(--dark); padding:28px 16px; display:flex; flex-direction:column; position:fixed; left:0; top:0; bottom:0; z-index:100; }
-.logo { text-align:center; padding-bottom:24px; border-bottom:1px solid rgba(201,168,76,0.2); margin-bottom:20px; }
-.logo-circle { width:56px; height:56px; background:linear-gradient(135deg,var(--gold),#e8c870); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-weight:700; font-size:16px; color:var(--dark); margin:0 auto 10px; }
-.logo-name { font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--gold); letter-spacing:2px; }
-.logo-sub { font-size:10px; color:rgba(201,168,76,0.4); letter-spacing:2px; text-transform:uppercase; margin-top:2px; }
-.nav-section { font-size:10px; color:rgba(201,168,76,0.3); letter-spacing:2px; text-transform:uppercase; padding:14px 10px 6px; font-family:'DM Mono',monospace; }
-.nav-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:8px; cursor:pointer; font-size:13px; color:rgba(255,255,255,0.45); margin-bottom:2px; transition:all 0.2s; }
-.nav-item:hover { background:rgba(201,168,76,0.1); color:rgba(255,255,255,0.8); }
-.nav-item.active { background:rgba(201,168,76,0.15); color:var(--gold); border:1px solid rgba(201,168,76,0.25); }
-.nav-badge { margin-left:auto; background:var(--terra); color:white; border-radius:10px; padding:1px 7px; font-size:10px; font-weight:700; }
-.sidebar-bottom { margin-top:auto; padding-top:16px; border-top:1px solid rgba(201,168,76,0.15); }
-.user-card { display:flex; align-items:center; gap:10px; padding:10px 12px; background:rgba(201,168,76,0.08); border-radius:10px; border:1px solid rgba(201,168,76,0.15); }
-.user-av { width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,var(--gold),#e8c870); display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--dark); font-size:13px; flex-shrink:0; }
-.user-name { font-size:12px; font-weight:600; color:var(--gold); }
-.user-role { font-size:10px; color:rgba(201,168,76,0.4); }
-.live-badge { display:flex; align-items:center; gap:6px; font-size:10px; color:var(--green); font-family:'DM Mono',monospace; margin-bottom:10px; justify-content:center; }
-.live-dot { width:6px; height:6px; border-radius:50%; background:#34d399; animation:pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+body {
+  background: #b8b0a4;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 15px;
+  font-family: 'Montserrat', sans-serif;
+}
 
-/* MAIN */
-.main { margin-left:240px; flex:1; padding:28px; }
-.page { display:none; }
-.page.active { display:block; }
+.flyer {
+  width: 100%;
+  max-width: 700px;
+  background: var(--cream);
+  box-shadow: 0 30px 100px rgba(0,0,0,0.4);
+  position: relative;
+  overflow: hidden;
+}
 
-/* HEADER */
-.header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; }
-.header h1 { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:600; }
-.header p { font-size:12px; color:var(--muted); margin-top:3px; letter-spacing:0.5px; }
-.btn-primary { background:var(--dark); color:var(--gold); border:1px solid rgba(201,168,76,0.3); border-radius:10px; padding:10px 20px; font-size:13px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; }
-.btn-primary:hover { background:var(--gold); color:var(--dark); }
+/* ═══════════════════════════════
+   HERO
+═══════════════════════════════ */
+.hero {
+  position: relative;
+  height: 500px;
+  overflow: hidden;
+}
 
-/* STATS */
-.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
-.stat { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px 20px; position:relative; overflow:hidden; }
-.stat::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
-.stat.s1::before { background:linear-gradient(90deg,var(--terra),#e8693a); }
-.stat.s2::before { background:linear-gradient(90deg,#d97706,#fbbf24); }
-.stat.s3::before { background:linear-gradient(90deg,var(--green),#34d399); }
-.stat.s4::before { background:linear-gradient(90deg,var(--gold),#e8c870); }
-.stat-n { font-family:'Cormorant Garamond',serif; font-size:38px; font-weight:600; color:var(--dark); line-height:1; }
-.stat-l { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin-top:5px; font-family:'DM Mono',monospace; }
-.stat-delta { font-size:11px; color:var(--green); margin-top:4px; font-family:'DM Mono',monospace; }
+.hero-split {
+  position: absolute; inset: 0;
+  display: grid; grid-template-columns: 55% 45%;
+}
+.hero-split img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 8s ease;
+}
+.hero-split img:hover { transform: scale(1.04); }
 
-/* GRID */
-.grid { display:grid; grid-template-columns:1fr 320px; gap:16px; }
+/* Overlay layers */
+.hero-vignette {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, rgba(13,37,53,0.5) 0%, transparent 40%, transparent 60%, rgba(13,37,53,0.4) 100%),
+    linear-gradient(180deg, rgba(13,37,53,0.6) 0%, rgba(13,37,53,0.05) 30%, rgba(13,37,53,0.05) 60%, rgba(13,37,53,0.85) 100%);
+}
 
-/* PANEL */
-.panel { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
-.panel-header { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; border-bottom:1px solid var(--border); background:linear-gradient(to right,rgba(201,168,76,0.04),transparent); }
-.panel-title { font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:600; }
-.panel-link { font-size:11px; color:var(--gold); cursor:pointer; font-weight:600; }
+/* Center divider line */
+.hero-divider-line {
+  position: absolute; top: 0; bottom: 0;
+  left: 55%; width: 2px;
+  background: linear-gradient(180deg, transparent, var(--gold) 30%, var(--gold) 70%, transparent);
+  z-index: 3;
+}
 
-/* TABS */
-.tabs { display:flex; gap:4px; padding:12px 20px; border-bottom:1px solid var(--border); background:#fdfaf6; }
-.tab { padding:5px 14px; border-radius:20px; font-size:11px; font-weight:700; cursor:pointer; border:1.5px solid transparent; transition:all 0.2s; font-family:'DM Sans',sans-serif; }
-.tab.active { background:var(--dark); color:white; }
-.tab:not(.active) { color:var(--muted); border-color:var(--border); }
-.tab:not(.active):hover { border-color:var(--dark); color:var(--dark); }
+.hero-content {
+  position: absolute; inset: 0; z-index: 4;
+  display: flex; flex-direction: column;
+  align-items: center;
+  padding-top: 32px;
+}
 
-/* SECTION LABEL */
-.section-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:2px; padding:9px 20px; background:#fdfaf6; border-bottom:1px solid rgba(201,168,76,0.08); font-family:'DM Mono',monospace; }
+/* Logo */
+.logo-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  margin-bottom: 20px;
+}
+.logo-ring {
+  width: 80px; height: 80px; border-radius: 50%;
+  border: 2px solid rgba(200,169,110,0.5);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; margin-bottom: 10px;
+}
+.logo-ring::before {
+  content: '';
+  position: absolute; inset: 5px;
+  border-radius: 50%;
+  border: 1px solid rgba(200,169,110,0.3);
+}
+.logo-ring-inner {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, rgba(200,169,110,0.25), rgba(13,37,53,0.5));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+}
+.logo-wordmark {
+  font-family: 'Cormorant Garamond', serif;
+  color: white; font-size: 28px; font-weight: 700;
+  letter-spacing: 8px; text-align: center;
+  line-height: 1;
+}
+.logo-rule {
+  display: flex; align-items: center; gap: 8px; margin-top: 5px;
+}
+.logo-rule-line { height: 1px; width: 35px; background: var(--gold); }
+.logo-rule-text { font-size: 8px; letter-spacing: 5px; color: var(--gold); font-weight: 600; }
 
-/* LEAD ROW */
-.lead-row { display:grid; grid-template-columns:10px 1fr 100px 85px 110px; gap:14px; padding:14px 20px; border-bottom:1px solid rgba(201,168,76,0.08); align-items:center; transition:background 0.15s; cursor:pointer; }
-.lead-row:last-child { border-bottom:none; }
-.lead-row:hover { background:rgba(201,168,76,0.04); }
-.lead-row.selected { background:rgba(201,168,76,0.08); border-left:3px solid var(--gold); }
-.prio { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-.prio-h { background:var(--terra); box-shadow:0 0 5px rgba(193,68,14,0.4); }
-.prio-m { background:#d97706; }
-.prio-l { background:var(--green); }
-.lead-name { font-size:13px; font-weight:600; }
-.lead-info { font-size:11px; color:var(--muted); margin-top:2px; font-family:'DM Mono',monospace; }
-.badge { font-size:10px; padding:4px 10px; border-radius:20px; font-weight:700; display:inline-block; letter-spacing:0.5px; }
-.badge-mar { background:rgba(193,68,14,0.1); color:var(--terra); }
-.badge-egy { background:rgba(27,67,50,0.1); color:var(--green); }
-.badge-tun { background:rgba(109,40,217,0.1); color:#7c3aed; }
-.badge-hol { background:rgba(37,99,235,0.1); color:#1d4ed8; }
-.status-new { background:rgba(193,68,14,0.1); color:var(--terra); }
-.status-sent { background:rgba(27,67,50,0.1); color:var(--green); }
-.status-wait { background:rgba(217,119,6,0.1); color:#d97706; }
-.btn-send { background:var(--dark); color:var(--gold); border:1px solid rgba(201,168,76,0.3); border-radius:7px; padding:7px 12px; font-size:11px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; white-space:nowrap; }
-.btn-send:hover { background:var(--gold); color:var(--dark); }
-.btn-done { background:transparent; color:var(--muted); border:1px solid var(--border); border-radius:7px; padding:7px 12px; font-size:11px; cursor:pointer; }
+/* Hero titles */
+.hero-eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 5px;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 10px; text-align: center;
+}
+.hero-h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(48px,9vw,72px);
+  font-weight: 700; line-height: 0.9;
+  color: white; text-align: center;
+  text-shadow: 0 4px 30px rgba(0,0,0,0.3);
+  margin-bottom: 4px;
+}
+.hero-h1 .amp { color: var(--gold2); font-style: italic; font-size: 0.7em; }
+.hero-h1 .city2 { color: var(--gold2); }
 
-/* RIGHT PANEL */
-.detail-panel { background:var(--dark); border-radius:14px; padding:20px; color:white; margin-bottom:14px; }
-.detail-label { font-size:10px; color:rgba(201,168,76,0.4); text-transform:uppercase; letter-spacing:2px; margin-bottom:14px; font-family:'DM Mono',monospace; }
-.detail-name { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; color:var(--gold); margin-bottom:3px; }
-.detail-id { font-size:10px; color:rgba(201,168,76,0.4); font-family:'DM Mono',monospace; margin-bottom:16px; }
-.detail-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
-.detail-row:last-of-type { border-bottom:none; }
-.d-key { font-size:11px; color:rgba(255,255,255,0.35); font-family:'DM Mono',monospace; }
-.d-val { font-size:12px; font-weight:600; color:white; }
-.d-val.gold { color:var(--gold); }
-.d-val.red { color:#f87171; }
-.d-val.green { color:#34d399; }
+.hero-caption {
+  font-size: 11px; font-weight: 300; letter-spacing: 3px;
+  text-transform: uppercase; color: rgba(255,255,255,0.7);
+  margin-bottom: 6px; text-align: center;
+}
+.hero-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px; font-style: italic; font-weight: 300;
+  color: rgba(255,255,255,0.8); text-align: center;
+}
 
-/* UPLOAD AREA */
-.upload-area { border:2px dashed rgba(201,168,76,0.2); border-radius:10px; padding:16px; text-align:center; cursor:pointer; margin-top:14px; transition:all 0.2s; }
-.upload-area:hover { border-color:var(--gold); background:rgba(201,168,76,0.05); }
-.upload-icon { font-size:24px; margin-bottom:6px; }
-.upload-text { font-size:11px; color:rgba(255,255,255,0.4); }
-.upload-sub { font-size:10px; color:rgba(255,255,255,0.2); margin-top:2px; font-family:'DM Mono',monospace; }
+/* Price badge */
+.price-badge {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  background: rgba(13,37,53,0.9);
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  padding: 18px 45px 15px;
+  text-align: center;
+  backdrop-filter: blur(12px);
+  min-width: 240px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(200,169,110,0.2);
+}
+.pb-ab {
+  font-size: 9px; font-weight: 700; letter-spacing: 4px;
+  color: rgba(255,255,255,0.4); text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.pb-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 68px; font-weight: 700;
+  color: white; line-height: 1;
+  transition: all 0.4s cubic-bezier(.34,1.56,.64,1);
+  display: flex; align-items: baseline; justify-content: center; gap: 3px;
+}
+.pb-num .sym { font-size: 32px; margin-bottom: 6px; }
+.pb-per {
+  font-size: 9px; font-weight: 700; letter-spacing: 4px;
+  color: rgba(255,255,255,0.4); text-transform: uppercase;
+  margin-top: 2px;
+}
+.pb-statt {
+  font-size: 11px; color: rgba(255,255,255,0.35);
+  margin-top: 5px; display: none;
+}
+.pb-statt s { color: rgba(255,255,255,0.25); }
 
-/* TIPS */
-.tips-box { background:rgba(255,255,255,0.05); border-radius:10px; padding:12px; margin-top:12px; }
-.tips-label { font-size:10px; color:rgba(201,168,76,0.4); text-transform:uppercase; letter-spacing:2px; margin-bottom:8px; font-family:'DM Mono',monospace; }
-.tips-input { width:100%; background:transparent; border:none; color:white; font-family:'DM Sans',sans-serif; font-size:12px; resize:none; outline:none; min-height:60px; line-height:1.6; }
-.tips-input::placeholder { color:rgba(255,255,255,0.2); }
+/* ═══════════════════════════════
+   HIGHLIGHTS BAR
+═══════════════════════════════ */
+.hbar {
+  background: var(--navy);
+  border-top: 3px solid var(--gold);
+  padding: 22px 25px;
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 0;
+}
+.hbar-item {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; padding: 0 15px;
+  border-right: 1px solid rgba(200,169,110,0.2);
+}
+.hbar-item:last-child { border-right: none; }
+.hbar-icon {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(200,169,110,0.12);
+  border: 1px solid rgba(200,169,110,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; margin-bottom: 10px;
+}
+.hbar-title {
+  font-size: 10px; font-weight: 800; color: white;
+  letter-spacing: 1px; text-transform: uppercase;
+  margin-bottom: 6px; line-height: 1.3;
+}
+.hbar-desc { font-size: 9px; color: rgba(255,255,255,0.45); line-height: 1.5; }
 
-/* SEND BUTTON */
-.send-btn { width:100%; margin-top:14px; background:linear-gradient(135deg,var(--terra),#d4571a); color:white; border:none; border-radius:10px; padding:13px; font-size:13px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; letter-spacing:1px; text-transform:uppercase; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px; }
-.send-btn:hover { transform:translateY(-1px); box-shadow:0 4px 15px rgba(193,68,14,0.3); }
-.send-btn.sent { background:linear-gradient(135deg,var(--green),#2d9a65); }
+/* ═══════════════════════════════
+   PHOTO MOSAIC
+═══════════════════════════════ */
+.mosaic {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  height: 155px; gap: 2px;
+  background: var(--navy);
+}
+.mosaic-item { position: relative; overflow: hidden; }
+.mosaic-item img { width:100%; height:100%; object-fit:cover; transition: transform 0.5s; }
+.mosaic-item:hover img { transform: scale(1.1); }
+.mosaic-label {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(0deg, rgba(13,37,53,0.92), transparent);
+  padding: 18px 6px 7px;
+  font-size: 7px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.85); text-align: center;
+}
 
-/* MINI STATS */
-.mini-panel { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px 20px; }
-.mini-title { font-family:'Cormorant Garamond',serif; font-size:16px; font-weight:600; margin-bottom:14px; }
-.mini-row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(201,168,76,0.08); }
-.mini-row:last-child { border-bottom:none; }
-.mini-label { font-size:12px; color:var(--muted); display:flex; align-items:center; gap:8px; }
-.mini-val { font-size:13px; font-weight:700; font-family:'DM Mono',monospace; color:var(--dark); }
+/* ═══════════════════════════════
+   LEISTUNGEN
+═══════════════════════════════ */
+.leist {
+  background: var(--sand);
+  padding: 28px 35px;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 25px; align-items: start;
+  border-bottom: 1px solid #ddd5c5;
+}
+.leist-left {}
+.leist-title {
+  font-size: 10px; font-weight: 800; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 16px;
+}
+.leist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 25px; }
+.leist-item {
+  display: flex; align-items: flex-start; gap: 7px;
+  font-size: 11px; color: #3a3a3a; line-height: 1.4;
+}
+.leist-check { color: var(--gold); font-weight: 900; flex-shrink: 0; margin-top: 1px; }
 
-/* TERMINAL */
-.terminal { background:#0a0e1a; border-radius:14px; padding:0; overflow:hidden; margin-top:16px; }
-.term-header { background:#111827; padding:10px 16px; display:flex; align-items:center; gap:6px; border-bottom:1px solid #1e2736; }
-.term-dot { width:10px; height:10px; border-radius:50%; }
-.term-title { font-size:11px; color:#4b5563; margin-left:auto; font-family:'DM Mono',monospace; }
-.term-body { padding:14px 16px; font-family:'DM Mono',monospace; font-size:12px; color:#94a3b8; line-height:2; max-height:200px; overflow-y:auto; }
-.term-line { display:flex; align-items:center; gap:8px; }
-.term-ok { color:#34d399; }
-.term-err { color:#f87171; }
-.term-info { color:#60a5fa; }
-.term-warn { color:#fbbf24; }
+.validity {
+  background: var(--navy);
+  border-radius: 4px; padding: 16px 20px;
+  text-align: center; min-width: 135px;
+  box-shadow: 0 4px 20px rgba(13,37,53,0.2);
+}
+.val-ico { font-size: 24px; margin-bottom: 7px; }
+.val-lbl {
+  font-size: 8px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: rgba(255,255,255,0.35);
+  margin-bottom: 5px;
+}
+.val-date {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; font-weight: 700; color: var(--gold2);
+  line-height: 1.2;
+}
 
-/* SECRET BUTTON */
-.secret-btn { width:100%; margin-top:8px; background:linear-gradient(135deg,#7c3aed,#5b21b6); color:white; border:none; border-radius:10px; padding:11px; font-size:12px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; letter-spacing:1px; transition:all 0.2s; }
-.secret-btn:hover { transform:translateY(-1px); }
+/* ═══════════════════════════════
+   EXTRAS
+═══════════════════════════════ */
+.extras {
+  background: var(--navy2);
+  padding: 30px 28px 26px;
+}
+.ext-header { text-align: center; margin-bottom: 24px; }
+.ext-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(200,169,110,0.15);
+  border: 1px solid rgba(200,169,110,0.35);
+  border-radius: 20px; padding: 5px 16px;
+  font-size: 8px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 12px;
+}
+.ext-h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; font-weight: 700; color: white;
+  margin-bottom: 5px;
+}
+.ext-sub { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 1px; }
 
-/* TOAST */
-.toast { position:fixed; bottom:30px; right:30px; background:var(--dark); color:var(--gold); padding:14px 20px; border-radius:12px; border:1px solid rgba(201,168,76,0.3); font-size:13px; font-weight:600; z-index:1000; transform:translateY(100px); opacity:0; transition:all 0.4s; }
-.toast.show { transform:translateY(0); opacity:1; }
+.ext-cards {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-bottom: 20px;
+}
 
-@media(max-width:900px) {
-  .sidebar { display:none; }
-  .main { margin-left:0; padding:16px; }
-  .stats { grid-template-columns:repeat(2,1fr); }
-  .grid { grid-template-columns:1fr; }
-  .lead-row { grid-template-columns:10px 1fr 85px; }
-  .lead-row > *:nth-child(4), .lead-row > *:nth-child(5) { display:none; }
+.ext-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(200,169,110,0.15);
+  border-radius: 6px; padding: 16px;
+  cursor: pointer; text-align: left;
+  transition: all 0.3s; position: relative;
+  overflow: hidden;
+}
+.ext-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(200,169,110,0.08), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.ext-card:hover { border-color: rgba(200,169,110,0.5); }
+.ext-card:hover::before { opacity: 1; }
+.ext-card.on {
+  border-color: var(--gold);
+  background: rgba(200,169,110,0.1);
+  box-shadow: 0 0 0 1px rgba(200,169,110,0.3), inset 0 1px 0 rgba(200,169,110,0.15);
+}
+.ext-card.on::before { opacity: 1; }
+
+.ext-tick {
+  position: absolute; top: 10px; right: 10px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--gold); color: white;
+  font-size: 11px; font-weight: 900;
+  display: none; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(200,169,110,0.4);
+}
+.ext-card.on .ext-tick { display: flex; }
+
+.ec-img {
+  width: 100%; height: 90px; object-fit: cover;
+  border-radius: 4px; margin-bottom: 10px;
+  display: block;
+}
+.ec-city {
+  font-size: 8px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 4px;
+}
+.ec-name {
+  font-size: 12px; font-weight: 700; color: white;
+  margin-bottom: 8px; line-height: 1.3;
+}
+.ec-prices { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; flex-wrap: wrap; }
+.ec-orig { font-size: 10px; color: rgba(255,255,255,0.25); text-decoration: line-through; }
+.ec-disc {
+  font-size: 8px; font-weight: 700; background: var(--gold);
+  color: var(--navy); padding: 2px 6px; border-radius: 2px; letter-spacing: 0.5px;
+}
+.ec-new {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; font-weight: 700; color: var(--gold2);
+}
+.ec-new small { font-family: 'Montserrat',sans-serif; font-size: 9px; opacity: .4; }
+.ec-add { font-size: 9px; color: rgba(255,255,255,0.25); margin-top: 2px; }
+
+/* Summary */
+.ext-sum {
+  background: rgba(10,25,38,0.6);
+  border: 1px solid rgba(200,169,110,0.15);
+  border-radius: 6px; padding: 16px 20px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.es-l {}
+.es-lbl { font-size: 8px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 4px; }
+.es-sel { font-size: 11px; color: rgba(255,255,255,0.6); max-width: 220px; line-height: 1.4; }
+.es-r { text-align: right; flex-shrink: 0; margin-left: 15px; }
+.es-tlbl { font-size: 8px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 3px; }
+.es-total {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 34px; font-weight: 700; color: var(--gold2);
+  transition: all 0.35s cubic-bezier(.34,1.56,.64,1);
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════
+   CTA
+═══════════════════════════════ */
+.cta {
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg, #b8943e 0%, #d4b96a 50%, #b8943e 100%);
+  background-size: 200% 100%;
+  padding: 22px 30px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 15px; cursor: pointer;
+  transition: background-position 0.4s, filter 0.3s;
+}
+.cta::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+.cta:hover { filter: brightness(1.08); }
+.cta:hover::before { transform: translateX(100%); }
+.cta:active { filter: brightness(0.95); }
+.cta-ico { font-size: 26px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+.cta-text-wrap {}
+.cta-main {
+  font-size: 14px; font-weight: 800;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.cta-note { font-size: 9px; color: rgba(255,255,255,0.65); letter-spacing: 2px; margin-top: 2px; }
+
+/* ═══════════════════════════════
+   FOOTER
+═══════════════════════════════ */
+.footer {
+  background: var(--navy);
+  padding: 18px 15px;
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 5px;
+  border-top: 2px solid rgba(200,169,110,0.25);
+}
+.fi { text-align: center; padding: 5px; }
+.fi-icon { font-size: 22px; margin-bottom: 6px; }
+.fi-text {
+  font-size: 7px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: rgba(255,255,255,0.35);
+}
+
+/* ANIM */
+@keyframes pop {
+  0%   { transform: scale(1.15); color: var(--gold2); }
+  100% { transform: scale(1); color: white; }
+}
+.pop { animation: pop 0.4s cubic-bezier(.34,1.56,.64,1); }
+
+@media(max-width:520px){
+  .hbar { grid-template-columns: 1fr; gap: 15px; }
+  .hbar-item { border-right: none; border-bottom: 1px solid rgba(200,169,110,0.15); padding-bottom: 15px; flex-direction: row; text-align: left; }
+  .mosaic { grid-template-columns: 1fr 1fr; height: 200px; }
+  .leist { grid-template-columns: 1fr; }
+  .leist-grid { grid-template-columns: 1fr; }
+  .ext-cards { grid-template-columns: 1fr; }
+  .hero { height: 440px; }
 }
 </style>
 </head>
 <body>
+<div class="flyer">
 
-<!-- SIDEBAR -->
-<aside class="sidebar">
-  <div class="logo">
-    <div class="logo-circle">TCM</div>
-    <div class="logo-name">SAHARA CRM</div>
-    <div class="logo-sub">Travel Concept Morocco</div>
-  </div>
+  <!-- ═══ HERO ═══ -->
+  <div class="hero">
+    <div class="hero-split">
+      <img src="https://images.unsplash.com/photo-1539020140153-e479b8c22e70?w=800&q=85" alt="Marrakesch">
+      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=85" alt="Agadir">
+    </div>
+    <div class="hero-vignette"></div>
+    <div class="hero-divider-line"></div>
 
-  <div class="nav-section">Main Menu</div>
-  <div class="nav-item active" onclick="showPage('dashboard')">◈ Dashboard</div>
-  <div class="nav-item" onclick="showPage('leads')">◈ New Leads <span class="nav-badge" id="lead-count">3</span></div>
-  <div class="nav-item" onclick="showPage('sent')">◈ Sent Offers</div>
-  <div class="nav-item">◈ Statistics</div>
-
-  <div class="nav-section">Management</div>
-  <div class="nav-item">◈ Hotels</div>
-  <div class="nav-item">◈ Google Sheet</div>
-  <div class="nav-item">◈ Settings</div>
-
-  <div class="sidebar-bottom">
-    <div class="live-badge"><div class="live-dot"></div> System Active</div>
-    <div class="user-card">
-      <div class="user-av">H</div>
-      <div>
-        <div class="user-name">Hicham Fahmi</div>
-        <div class="user-role">TCM Morocco</div>
+    <div class="hero-content">
+      <div class="logo-wrap">
+        <div class="logo-ring">
+          <div class="logo-ring-inner">⛵</div>
+        </div>
+        <div class="logo-wordmark">SULTAN</div>
+        <div class="logo-rule">
+          <div class="logo-rule-line"></div>
+          <div class="logo-rule-text">TRAVEL</div>
+          <div class="logo-rule-line"></div>
+        </div>
       </div>
+
+      <div class="hero-eyebrow">✦ Exklusive Kombireise ✦</div>
+      <div class="hero-h1">
+        MARRAKESCH<br>
+        <span class="amp">&</span> <span class="city2">AGADIR</span>
+      </div>
+      <div class="hero-caption">Stadt · Kultur · Strand</div>
+      <div class="hero-tagline">Die perfekte Kombination für Ihre Auszeit in Marokko.</div>
+    </div>
+
+    <div class="price-badge">
+      <div class="pb-ab">Ab</div>
+      <div class="pb-num" id="priceEl">
+        <span class="sym">€</span><span id="priceNum">597</span>
+      </div>
+      <div class="pb-per">Pro Person</div>
+      <div class="pb-statt" id="stattEl">Statt <s id="stattNum"></s></div>
     </div>
   </div>
-</aside>
 
-<!-- MAIN -->
-<main class="main">
+  <!-- ═══ HIGHLIGHTS BAR ═══ -->
+  <div class="hbar">
+    <div class="hbar-item">
+      <div class="hbar-icon">🏛️</div>
+      <div class="hbar-title">Das Beste aus zwei Welten</div>
+      <div class="hbar-desc">Pulsierende Medina & Atlantikstrand – zwei Welten in einer Reise.</div>
+    </div>
+    <div class="hbar-item">
+      <div class="hbar-icon">🌊</div>
+      <div class="hbar-title">Entspannung am Meer</div>
+      <div class="hbar-desc">Sonne, Sand und Meer an der schönsten Küste Marokkos.</div>
+    </div>
+    <div class="hbar-item">
+      <div class="hbar-icon">📸</div>
+      <div class="hbar-title">Kultur & Erlebnisse</div>
+      <div class="hbar-desc">Märkte, Gewürze, Architektur, marokkanische Gastfreundschaft.</div>
+    </div>
+  </div>
 
-  <!-- DASHBOARD PAGE -->
-  <div class="page active" id="page-dashboard">
-    <div class="header">
-      <div>
-        <h1>Lead Dashboard</h1>
-        <p id="current-date">Loading...</p>
-      </div>
-      <div style="display:flex;gap:10px;align-items:center">
-        <div class="live-badge" style="background:rgba(52,211,153,0.1);padding:6px 12px;border-radius:20px;border:1px solid rgba(52,211,153,0.2)"><div class="live-dot"></div> Live</div>
-        <button class="btn-primary" onclick="addTestLead()">+ Simulate Lead</button>
+  <!-- ═══ PHOTO MOSAIC ═══ -->
+  <div class="mosaic">
+    <div class="mosaic-item">
+      <img src="https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=300&q=80" alt="Kultur">
+      <div class="mosaic-label">Kultur & Sehenswürdigkeiten</div>
+    </div>
+    <div class="mosaic-item">
+      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=300&q=80" alt="Strand">
+      <div class="mosaic-label">Strand & Entspannung</div>
+    </div>
+    <div class="mosaic-item">
+      <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=300&q=80" alt="Hotel">
+      <div class="mosaic-label">Komfortable Unterkünfte</div>
+    </div>
+    <div class="mosaic-item">
+      <img src="https://images.unsplash.com/photo-1548013146-72479768bada?w=300&q=80" alt="Erlebnisse">
+      <div class="mosaic-label">Authentische Erlebnisse</div>
+    </div>
+  </div>
+
+  <!-- ═══ LEISTUNGEN ═══ -->
+  <div class="leist">
+    <div class="leist-left">
+      <div class="leist-title">Leistungen</div>
+      <div class="leist-grid">
+        <div class="leist-item"><span class="leist-check">✓</span>Kombination Marrakesch & Agadir</div>
+        <div class="leist-item"><span class="leist-check">✓</span>Komfortable Unterkünfte</div>
+        <div class="leist-item"><span class="leist-check">✓</span>8 Tage Citytrip & Entspannung</div>
+        <div class="leist-item"><span class="leist-check">✓</span>Transfers inklusive</div>
+        <div class="leist-item"><span class="leist-check">✓</span>Reiseleiter bei allen Ausflügen</div>
+        <div class="leist-item"><span class="leist-check">✓</span>Persönlicher Service vor Ort</div>
       </div>
     </div>
+    <div class="validity">
+      <div class="val-ico">📅</div>
+      <div class="val-lbl">Angebot gültig bis</div>
+      <div class="val-date">31. Juli<br>2026</div>
+    </div>
+  </div>
 
-    <div class="stats">
-      <div class="stat s1"><div class="stat-n" id="stat-new">3</div><div class="stat-l">New Today</div><div class="stat-delta">↑ +2 vs yesterday</div></div>
-      <div class="stat s2"><div class="stat-n" id="stat-progress">2</div><div class="stat-l">In Progress</div><div class="stat-delta">→ 1 waiting</div></div>
-      <div class="stat s3"><div class="stat-n" id="stat-sent">5</div><div class="stat-l">Sent Today</div><div class="stat-delta">↑ 3 replied</div></div>
-      <div class="stat s4"><div class="stat-n" id="stat-margin">€640</div><div class="stat-l">Margin Today</div><div class="stat-delta">↑ +€120</div></div>
+  <!-- ═══ EXTRAS ═══ -->
+  <div class="extras">
+    <div class="ext-header">
+      <div class="ext-pill">✦ Nur mit dieser Reise ✦</div>
+      <div class="ext-h2">Spezialangebote – 20% Rabatt</div>
+      <div class="ext-sub">Klicken Sie auf ein Extra · Preis wird sofort angepasst</div>
     </div>
 
-    <div class="grid">
-      <div>
-        <div class="panel" style="margin-bottom:16px">
-          <div class="panel-header">
-            <span class="panel-title">Today's Leads</span>
-            <span class="panel-link">View all →</span>
-          </div>
-          <div class="tabs">
-            <div class="tab active" onclick="filterLeads('all',this)">All (7)</div>
-            <div class="tab" onclick="filterLeads('high',this)">🔴 High (3)</div>
-            <div class="tab" onclick="filterLeads('mid',this)">🟡 Medium (2)</div>
-            <div class="tab" onclick="filterLeads('low',this)">🟢 Normal (2)</div>
-          </div>
+    <div class="ext-cards">
 
-          <div id="leads-container">
-            <div class="section-label">✦ High Priority</div>
-
-            <div class="lead-row" data-prio="high" onclick="selectLead(this,'Familie Müller','LEAD-2026-0602-001','6 Persons · 2 Weeks · €8,000','Morocco','🇩🇪 German','HIGH','Hicham','Lamia')">
-              <div class="prio prio-h"></div>
-              <div><div class="lead-name">Familie Müller</div><div class="lead-info">6P · 2W · €8,000 · 🇩🇪</div></div>
-              <span class="badge badge-mar">Morocco</span>
-              <span class="badge status-new">New</span>
-              <button class="btn-send" onclick="event.stopPropagation();sendLead(this,'Familie Müller')">▶ Send</button>
-            </div>
-
-            <div class="lead-row" data-prio="high" onclick="selectLead(this,'Van der Berg','LEAD-2026-0602-002','4 Persons · 10 Days · €5,500','Morocco','🇳🇱 Dutch','HIGH','Samir','Samir')">
-              <div class="prio prio-h"></div>
-              <div><div class="lead-name">Van der Berg</div><div class="lead-info">4P · 10D · €5,500 · 🇳🇱</div></div>
-              <span class="badge badge-mar">Morocco</span>
-              <span class="badge status-new">New</span>
-              <button class="btn-send" onclick="event.stopPropagation();sendLead(this,'Van der Berg')">▶ Send</button>
-            </div>
-
-            <div class="lead-row" data-prio="high" onclick="selectLead(this,'السيد أحمد حسن','LEAD-2026-0602-003','5 Persons · 1 Week · €6,000','Morocco','🇸🇦 Arabic','HIGH','Lamia','Lamia')">
-              <div class="prio prio-h"></div>
-              <div><div class="lead-name">السيد أحمد حسن</div><div class="lead-info">5P · 1W · €6,000 · 🇸🇦</div></div>
-              <span class="badge badge-mar">Morocco</span>
-              <span class="badge status-new">New</span>
-              <button class="btn-send" onclick="event.stopPropagation();sendLead(this,'Ahmed Hassan')">▶ Send</button>
-            </div>
-
-            <div class="section-label">◈ Medium Priority</div>
-
-            <div class="lead-row" data-prio="mid" onclick="selectLead(this,'Famille Dupont','LEAD-2026-0602-004','4 Persons · 10 Days · €5,000','Egypt','🇫🇷 French','MEDIUM','Lamia','Lamia')">
-              <div class="prio prio-m"></div>
-              <div><div class="lead-name">Famille Dupont</div><div class="lead-info">4P · 10D · €5,000 · 🇫🇷</div></div>
-              <span class="badge badge-egy">Egypt</span>
-              <span class="badge status-wait">Waiting</span>
-              <button class="btn-send" onclick="event.stopPropagation();sendLead(this,'Famille Dupont')">▶ Send</button>
-            </div>
-
-            <div class="lead-row" data-prio="mid" onclick="selectLead(this,'De heer Janssen','LEAD-2026-0602-005','3 Persons · 1 Week · €4,000','Morocco','🇳🇱 Dutch','MEDIUM','Samir','Samir')">
-              <div class="prio prio-m"></div>
-              <div><div class="lead-name">De heer Janssen</div><div class="lead-info">3P · 1W · €4,000 · 🇳🇱</div></div>
-              <span class="badge badge-mar">Morocco</span>
-              <span class="badge status-wait">Waiting</span>
-              <button class="btn-send" onclick="event.stopPropagation();sendLead(this,'De heer Janssen')">▶ Send</button>
-            </div>
-
-            <div class="section-label">✓ Sent</div>
-
-            <div class="lead-row" data-prio="low" onclick="selectLead(this,'Jan de Vries','LEAD-2026-0602-006','2 Persons · 1 Week · €2,000','Morocco','🇳🇱 Dutch','NORMAL','Samir','Samir')">
-              <div class="prio prio-l"></div>
-              <div><div class="lead-name">Jan de Vries</div><div class="lead-info">2P · 1W · €2,000 · 🇳🇱</div></div>
-              <span class="badge badge-mar">Morocco</span>
-              <span class="badge status-sent">Sent ✓</span>
-              <button class="btn-done">✓ Done</button>
-            </div>
-
-            <div class="lead-row" data-prio="low" onclick="selectLead(this,'Marie Martin','LEAD-2026-0602-007','2 Persons · 5 Days · €1,800','Morocco','🇫🇷 French','NORMAL','Lamia','Lamia')">
-              <div class="prio prio-l"></div>
-              <div><div class="lead-name">Marie Martin</div><div class="lead-info">2P · 5D · €1,800 · 🇫🇷</div></div>
-              <span class="badge badge-mar">Morocco</span>
-              <span class="badge status-sent">Sent ✓</span>
-              <button class="btn-done">✓ Done</button>
-            </div>
-          </div>
+      <div class="ext-card" onclick="toggle(this,'kochkurs',50,75,60)">
+        <div class="ext-tick">✓</div>
+        <img class="ec-img" src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=75" alt="Kochkurs" onerror="this.style.display='none'">
+        <div class="ec-city">Marrakesch</div>
+        <div class="ec-name">Marokkanischer Kochkurs</div>
+        <div class="ec-prices">
+          <span class="ec-orig">€75</span>
+          <span class="ec-disc">–20%</span>
         </div>
-
-        <!-- TERMINAL -->
-        <div class="terminal">
-          <div class="term-header">
-            <div class="term-dot" style="background:#ff5f56"></div>
-            <div class="term-dot" style="background:#ffbd2e"></div>
-            <div class="term-dot" style="background:#27c93f"></div>
-            <div class="term-title">TCM Agent — Live Log</div>
-          </div>
-          <div class="term-body" id="terminal">
-            <div class="term-line"><span class="term-ok">✓</span><span>System started — TCM Lead Agent v1.0</span></div>
-            <div class="term-line"><span class="term-ok">✓</span><span>Connected to Google Sheets</span></div>
-            <div class="term-line"><span class="term-ok">✓</span><span>ElevenLabs Voice: Lamia + Samir ready</span></div>
-            <div class="term-line"><span class="term-ok">✓</span><span>SMTP: mail.antagonist.nl connected</span></div>
-            <div class="term-line"><span class="term-info">→</span><span>Waiting for new leads...</span></div>
-          </div>
-        </div>
+        <div class="ec-new">€60 <small>/Pers.</small></div>
+        <div class="ec-add">+ €50 zur Reise</div>
       </div>
 
-      <!-- RIGHT PANEL -->
-      <div>
-        <div class="detail-panel">
-          <div class="detail-label">Lead Details</div>
-          <div class="detail-name" id="d-name">Select a Lead</div>
-          <div class="detail-id" id="d-id">Click on any lead to see details</div>
-
-          <div id="d-details" style="opacity:0.4">
-            <div class="detail-row"><span class="d-key">Persons</span><span class="d-val" id="d-persons">—</span></div>
-            <div class="detail-row"><span class="d-key">Destination</span><span class="d-val" id="d-dest">—</span></div>
-            <div class="detail-row"><span class="d-key">Language</span><span class="d-val" id="d-lang">—</span></div>
-            <div class="detail-row"><span class="d-key">Budget</span><span class="d-val gold" id="d-budget">—</span></div>
-            <div class="detail-row"><span class="d-key">Priority</span><span class="d-val red" id="d-prio">—</span></div>
-            <div class="detail-row"><span class="d-key">Assigned to</span><span class="d-val" id="d-assigned">—</span></div>
-            <div class="detail-row"><span class="d-key">Voice</span><span class="d-val" id="d-voice">—</span></div>
-          </div>
-
-          <div class="upload-area" onclick="triggerUpload()">
-            <div class="upload-icon">📎</div>
-            <div class="upload-text">Upload Offer (PNG/PDF)</div>
-            <div class="upload-sub" id="upload-status">Click or drag file here</div>
-          </div>
-          <input type="file" id="file-input" style="display:none" accept=".png,.pdf,.jpg" onchange="handleFile(this)">
-
-          <div class="tips-box">
-            <div class="tips-label">Your Tips & Notes</div>
-            <textarea class="tips-input" id="tips-input" placeholder="e.g. Family better off with family room + suite instead of 3 rooms, saves €300..."></textarea>
-          </div>
-
-          <button class="send-btn" id="send-btn" onclick="triggerSend()">
-            ▶ SEND OFFER + VOICE
-          </button>
+      <div class="ext-card" onclick="toggle(this,'hammam',50,85,68)">
+        <div class="ext-tick">✓</div>
+        <img class="ec-img" src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400&q=75" alt="Hammam" onerror="this.style.display='none'">
+        <div class="ec-city">Agadir</div>
+        <div class="ec-name">Hammam & Massage</div>
+        <div class="ec-prices">
+          <span class="ec-orig">€85</span>
+          <span class="ec-disc">–20%</span>
         </div>
+        <div class="ec-new">€68 <small>/Pers.</small></div>
+        <div class="ec-add">+ €50 zur Reise</div>
+      </div>
 
-        <!-- MINI STATS -->
-        <div class="mini-panel" style="margin-bottom:14px">
-          <div class="mini-title">Today's Overview</div>
-          <div class="mini-row"><span class="mini-label">🇩🇪 German</span><span class="mini-val">3 leads</span></div>
-          <div class="mini-row"><span class="mini-label">🇳🇱 Dutch</span><span class="mini-val">3 leads</span></div>
-          <div class="mini-row"><span class="mini-label">🇫🇷 French</span><span class="mini-val">2 leads</span></div>
-          <div class="mini-row"><span class="mini-label">🇸🇦 Arabic</span><span class="mini-val">1 lead</span></div>
-          <div class="mini-row"><span class="mini-label">🇲🇦 Morocco</span><span class="mini-val" style="color:var(--terra)">5 leads</span></div>
-          <div class="mini-row"><span class="mini-label">🇪🇬 Egypt</span><span class="mini-val" style="color:var(--green)">2 leads</span></div>
+      <div class="ext-card" onclick="toggle(this,'souk',50,65,52)">
+        <div class="ext-tick">✓</div>
+        <img class="ec-img" src="https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=400&q=75" alt="Souk" onerror="this.style.display='none'">
+        <div class="ec-city">Marrakesch</div>
+        <div class="ec-name">Privater Souk-Guide</div>
+        <div class="ec-prices">
+          <span class="ec-orig">€65</span>
+          <span class="ec-disc">–20%</span>
         </div>
+        <div class="ec-new">€52 <small>/Pers.</small></div>
+        <div class="ec-add">+ €50 zur Reise</div>
+      </div>
 
-        <!-- SECRET BUTTON -->
-        <button class="secret-btn" onclick="triggerSurprise()">
-          😄 SECRET: Hicham & Lamia → Holland!
-        </button>
+      <div class="ext-card" onclick="toggle(this,'surf',50,90,72)">
+        <div class="ext-tick">✓</div>
+        <img class="ec-img" src="https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=400&q=75" alt="Surf" onerror="this.style.display='none'">
+        <div class="ec-city">Agadir</div>
+        <div class="ec-name">Surfkurs am Atlantik</div>
+        <div class="ec-prices">
+          <span class="ec-orig">€90</span>
+          <span class="ec-disc">–20%</span>
+        </div>
+        <div class="ec-new">€72 <small>/Pers.</small></div>
+        <div class="ec-add">+ €50 zur Reise</div>
+      </div>
+
+    </div>
+
+    <div class="ext-sum">
+      <div class="es-l">
+        <div class="es-lbl">Ihre Auswahl</div>
+        <div class="es-sel" id="selText">Noch nichts ausgewählt</div>
+      </div>
+      <div class="es-r">
+        <div class="es-tlbl">Gesamtpreis</div>
+        <div class="es-total" id="totalEl">€ 597</div>
       </div>
     </div>
   </div>
 
-</main>
+  <!-- ═══ CTA ═══ -->
+  <div class="cta" onclick="submit()">
+    <div class="cta-ico">📅</div>
+    <div class="cta-text-wrap">
+      <div class="cta-main">Jetzt Entdecken & Angebot Anfordern!</div>
+      <div class="cta-note">UNVERBINDLICH & KOSTENLOS</div>
+    </div>
+  </div>
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
+  <!-- ═══ FOOTER ═══ -->
+  <div class="footer">
+    <div class="fi"><div class="fi-icon">✈️</div><div class="fi-text">Flug Inklusive</div></div>
+    <div class="fi"><div class="fi-icon">🏨</div><div class="fi-text">Hotelaufenthalt</div></div>
+    <div class="fi"><div class="fi-icon">🚐</div><div class="fi-text">Transfers</div></div>
+    <div class="fi"><div class="fi-icon">👤</div><div class="fi-text">Pers. Service</div></div>
+  </div>
+
+</div>
 
 <script>
-// DATE
-document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+const BASE = 597;
+const S = {};
+const N = { kochkurs:'Kochkurs Marrakesch', hammam:'Hammam & Massage', souk:'Souk-Guide', surf:'Surfkurs Agadir' };
 
-// NAVIGATION
-function showPage(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  event.target.classList.add('active');
+function toggle(el, id, add, orig, disc) {
+  S[id] ? (delete S[id], el.classList.remove('on')) : (S[id]={add,orig,disc}, el.classList.add('on'));
+  update();
 }
 
-// SELECT LEAD
-let selectedLead = null;
-function selectLead(row, name, id, info, dest, lang, prio, assigned, voice) {
-  document.querySelectorAll('.lead-row').forEach(r => r.classList.remove('selected'));
-  row.classList.add('selected');
-  selectedLead = {name, id, info, dest, lang, prio, assigned, voice};
+function update() {
+  const addT  = Object.values(S).reduce((s,v)=>s+v.add, 0);
+  const origT = Object.values(S).reduce((s,v)=>s+v.orig, 0);
+  const total = BASE + addT;
 
-  document.getElementById('d-name').textContent = name;
-  document.getElementById('d-id').textContent = id;
-  document.getElementById('d-persons').textContent = info.split('·')[0].trim();
-  document.getElementById('d-dest').textContent = dest;
-  document.getElementById('d-lang').textContent = lang;
-  document.getElementById('d-budget').textContent = '€' + info.split('€')[1];
-  document.getElementById('d-prio').textContent = prio === 'HIGH' ? '🔴 HIGH' : prio === 'MEDIUM' ? '🟡 MEDIUM' : '🟢 NORMAL';
-  document.getElementById('d-assigned').textContent = assigned;
-  document.getElementById('d-voice').textContent = voice;
-  document.getElementById('d-details').style.opacity = '1';
+  const pe = document.getElementById('priceEl');
+  pe.classList.remove('pop'); void pe.offsetWidth; pe.classList.add('pop');
 
-  addTerminalLine('info', `Lead selected: ${name} → Assigned to ${assigned}`);
-}
+  document.getElementById('priceNum').textContent = total;
+  document.getElementById('totalEl').textContent  = '€ ' + total;
 
-// FILTER
-function filterLeads(filter, tab) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  tab.classList.add('active');
-  document.querySelectorAll('.lead-row').forEach(row => {
-    if (filter === 'all') row.style.display = '';
-    else row.style.display = row.dataset.prio === filter ? '' : 'none';
-  });
-}
-
-// UPLOAD
-function triggerUpload() { document.getElementById('file-input').click(); }
-function handleFile(input) {
-  if (input.files[0]) {
-    document.getElementById('upload-status').textContent = '✓ ' + input.files[0].name;
-    addTerminalLine('ok', `Offer uploaded: ${input.files[0].name}`);
-    showToast('📎 Offer uploaded successfully!');
+  const sb = document.getElementById('stattEl');
+  if (addT > 0) {
+    sb.style.display = 'block';
+    document.getElementById('stattNum').textContent = '€' + (BASE + origT);
+  } else {
+    sb.style.display = 'none';
   }
+
+  const keys = Object.keys(S);
+  document.getElementById('selText').textContent = keys.length ? keys.map(k=>N[k]).join(' · ') : 'Noch nichts ausgewählt';
 }
 
-// SEND
-function sendLead(btn, name) {
-  btn.textContent = '✓ Sent';
-  btn.style.background = 'var(--green)';
-  btn.style.color = 'white';
-  btn.style.border = 'none';
-  addTerminalLine('ok', `Lead processing: ${name}...`);
-  setTimeout(() => addTerminalLine('ok', `Claude generating voice text for ${name}...`), 800);
-  setTimeout(() => addTerminalLine('ok', `ElevenLabs voice generated ✓`), 1600);
-  setTimeout(() => addTerminalLine('ok', `Email sent to client ✓`), 2400);
-  setTimeout(() => addTerminalLine('ok', `Google Sheets updated ✓`), 3200);
-  showToast(`✓ Offer sent to ${name}!`);
-}
-
-function triggerSend() {
-  if (!selectedLead) { showToast('⚠️ Please select a lead first!'); return; }
-  const btn = document.getElementById('send-btn');
-  btn.classList.add('sent');
-  btn.textContent = '✓ SENT SUCCESSFULLY!';
-  addTerminalLine('ok', `Processing: ${selectedLead.name}...`);
-  setTimeout(() => addTerminalLine('ok', `Claude writing voice message in ${selectedLead.lang}...`), 600);
-  setTimeout(() => addTerminalLine('ok', `ElevenLabs: ${selectedLead.voice} voice generated ✓`), 1400);
-  setTimeout(() => addTerminalLine('ok', `Email sent to ${selectedLead.assigned} ✓`), 2200);
-  setTimeout(() => addTerminalLine('ok', `Google Sheets row updated ✓`), 3000);
-  setTimeout(() => { btn.classList.remove('sent'); btn.textContent = '▶ SEND OFFER + VOICE'; }, 5000);
-  showToast(`🚀 Offer sent for ${selectedLead.name}!`);
-  document.getElementById('stat-sent').textContent = parseInt(document.getElementById('stat-sent').textContent) + 1;
-}
-
-// SIMULATE LEAD
-let leadCounter = 8;
-function addTestLead() {
-  const leads = [
-    {name:'Familie Weber', lang:'🇩🇪', dest:'Morocco', prio:'high', persons:'4P · 1W · €4,500'},
-    {name:'Mevrouw Bakker', lang:'🇳🇱', dest:'Morocco', prio:'high', persons:'3P · 10D · €3,800'},
-    {name:'M. Leblanc', lang:'🇫🇷', dest:'Egypt', prio:'mid', persons:'2P · 1W · €2,500'},
-  ];
-  const lead = leads[Math.floor(Math.random() * leads.length)];
-  const id = `LEAD-2026-0602-00${leadCounter++}`;
-
-  const container = document.getElementById('leads-container');
-  const firstSection = container.querySelector('.section-label');
-  const row = document.createElement('div');
-  row.className = 'lead-row';
-  row.dataset.prio = lead.prio;
-  row.style.animation = 'fadeIn 0.5s ease';
-  row.innerHTML = `
-    <div class="prio prio-h" style="animation:pulse 1s infinite"></div>
-    <div><div class="lead-name">${lead.name} <span style="background:#ef4444;color:white;font-size:9px;padding:1px 5px;border-radius:3px;margin-left:4px">NEW</span></div><div class="lead-info">${lead.persons} · ${lead.lang}</div></div>
-    <span class="badge badge-mar">${lead.dest}</span>
-    <span class="badge status-new">New</span>
-    <button class="btn-send" onclick="event.stopPropagation();sendLead(this,'${lead.name}')">▶ Send</button>
-  `;
-  row.onclick = () => selectLead(row, lead.name, id, lead.persons, lead.dest, lead.lang, 'HIGH', 'Hicham', 'Lamia');
-  container.insertBefore(row, firstSection.nextSibling);
-
-  const count = parseInt(document.getElementById('stat-new').textContent) + 1;
-  document.getElementById('stat-new').textContent = count;
-  document.getElementById('lead-count').textContent = count;
-
-  addTerminalLine('warn', `🔴 NEW LEAD: ${lead.name} | ${lead.dest} | ${lead.lang}`);
-  showToast(`🔴 New Lead: ${lead.name}!`);
-}
-
-// SURPRISE
-function triggerSurprise() {
-  addTerminalLine('warn', '😄 SECRET LEAD ACTIVATED...');
-  setTimeout(() => addTerminalLine('info', 'Name: Hicham & Lamia'), 500);
-  setTimeout(() => addTerminalLine('info', 'Destination: Holland → Amsterdam!'), 1000);
-  setTimeout(() => addTerminalLine('warn', 'Assigned to: SAMIR 😄'), 1500);
-  setTimeout(() => addTerminalLine('ok', 'Sending surprise offer to Samir... ✓'), 2000);
-  showToast('😄 Surprise sent to Samir! Hicham & Lamia → Holland!');
-}
-
-// TERMINAL
-function addTerminalLine(type, text) {
-  const term = document.getElementById('terminal');
-  const line = document.createElement('div');
-  line.className = 'term-line';
-  const icons = {ok:'✓', err:'✗', info:'→', warn:'!'};
-  line.innerHTML = `<span class="term-${type}">${icons[type]}</span><span>${text}</span>`;
-  term.appendChild(line);
-  term.scrollTop = term.scrollHeight;
-}
-
-// TOAST
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 3500);
+function submit() {
+  const keys = Object.keys(S);
+  const total = BASE + Object.values(S).reduce((s,v)=>s+v.add,0);
+  const ext = keys.length ? '\n\nExtras (–20% Rabatt):\n' + keys.map(k=>`• ${N[k]}: €${S[k].disc}/Pers.`).join('\n') : '';
+  alert(`✅ Vielen Dank!\n\nMarrakesch & Agadir – 8 Tage\nGrundpreis: €${BASE}/Person${ext}\n\nGesamtpreis: €${total}/Person\n\nWir melden uns innerhalb von 24 Stunden bei Ihnen!`);
 }
 </script>
 </body>
