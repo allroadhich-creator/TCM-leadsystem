@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sultan Travel – Marrakesch & Agadir</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #888;
+  display: flex;
+  justify-content: center;
+  padding: 20px 10px;
+  min-height: 100vh;
+  font-family: 'Arial', sans-serif;
+}
+
+.flyer-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+}
+
+/* Der originale Flyer als Bild */
+.flyer-img {
+  width: 100%;
+  display: block;
+}
+
+/* Preis-Overlay – exakt über dem Preisbereich im Flyer */
+.price-overlay {
+  position: absolute;
+  top: 43.5%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10, 40, 30, 0.92);
+  border: 2px solid #c4a258;
+  border-radius: 6px;
+  padding: 10px 35px 8px;
+  text-align: center;
+  min-width: 200px;
+  pointer-events: none;
+}
+
+.po-ab {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,0.6);
+  text-transform: uppercase;
+}
+
+.po-price {
+  font-family: 'Georgia', serif;
+  font-size: 52px;
+  font-weight: 900;
+  color: #c4a258;
+  line-height: 1;
+  transition: all 0.4s;
+}
+
+.po-per {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,0.6);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.po-statt {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  margin-top: 4px;
+  display: none;
+}
+
+.po-statt s { color: rgba(255,255,255,0.3); }
+
+/* Extras Section – unterhalb des Flyers */
+.extras-section {
+  background: #0d2535;
+  padding: 28px 25px;
+  border-top: 3px solid #c4a258;
+}
+
+.ext-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.ext-pill {
+  display: inline-block;
+  background: rgba(196,162,88,0.15);
+  border: 1px solid rgba(196,162,88,0.4);
+  border-radius: 20px;
+  padding: 5px 16px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #c4a258;
+  margin-bottom: 10px;
+}
+
+.ext-title {
+  font-family: 'Georgia', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.ext-sub {
+  font-size: 10px;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 1px;
+}
+
+/* Buttons Grid */
+.ext-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.ext-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(196,162,88,0.2);
+  border-radius: 6px;
+  padding: 15px 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.25s;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ext-btn:hover {
+  border-color: rgba(196,162,88,0.6);
+  background: rgba(196,162,88,0.07);
+}
+
+.ext-btn.on {
+  border-color: #c4a258;
+  background: rgba(196,162,88,0.12);
+  box-shadow: 0 0 0 1px rgba(196,162,88,0.25);
+}
+
+.ext-tick {
+  display: none;
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: #c4a258;
+  color: white;
+  font-size: 10px;
+  font-weight: 900;
+  align-items: center;
+  justify-content: center;
+}
+
+.ext-btn.on .ext-tick { display: flex; }
+
+.ext-icon { font-size: 28px; flex-shrink: 0; }
+
+.ext-info {}
+
+.ext-city {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #c4a258;
+  margin-bottom: 2px;
+}
+
+.ext-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 5px;
+  line-height: 1.3;
+}
+
+.ext-prices {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 2px;
+}
+
+.ext-orig {
+  font-size: 10px;
+  color: rgba(255,255,255,0.25);
+  text-decoration: line-through;
+}
+
+.ext-badge {
+  font-size: 8px;
+  font-weight: 700;
+  background: #c4a258;
+  color: #0d2535;
+  padding: 1px 5px;
+  border-radius: 2px;
+}
+
+.ext-new {
+  font-family: 'Georgia', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #e8c97a;
+}
+
+.ext-new small {
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  opacity: 0.4;
+}
+
+.ext-plus {
+  font-size: 9px;
+  color: rgba(255,255,255,0.25);
+}
+
+/* Summary */
+.ext-summary {
+  background: rgba(10,25,38,0.7);
+  border: 1px solid rgba(196,162,88,0.2);
+  border-radius: 6px;
+  padding: 15px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.es-lbl {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  margin-bottom: 4px;
+}
+
+.es-sel {
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+}
+
+.es-total-lbl {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  margin-bottom: 3px;
+  text-align: right;
+}
+
+.es-total {
+  font-family: 'Georgia', serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: #e8c97a;
+  transition: all 0.35s;
+  white-space: nowrap;
+}
+
+/* CTA Button */
+.cta-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #b8943e, #d4b96a);
+  border: none;
+  border-radius: 5px;
+  padding: 16px;
+  color: white;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: filter 0.3s;
+}
+
+.cta-btn:hover { filter: brightness(1.1); }
+
+/* ANIMATION */
+@keyframes pop {
+  0%   { transform: scale(1.12); color: #e8c97a; }
+  100% { transform: scale(1); color: #c4a258; }
+}
+.pop { animation: pop 0.35s ease; }
+
+@media(max-width: 480px) {
+  .ext-grid { grid-template-columns: 1fr; }
+  .po-price { font-size: 40px; }
+}
+</style>
+</head>
+<body>
+
+<div class="flyer-wrap">
+
+  <!-- ORIGINALER FLYER ALS BILD -->
+  <img class="flyer-img" src="flyer-bg.jpg" alt="Sultan Travel Flyer">
+
+  <!-- PREIS OVERLAY -->
+  <div class="price-overlay">
+    <div class="po-ab">AB</div>
+    <div class="po-price" id="priceEl"><span id="priceNum">597</span>€</div>
+    <div class="po-per">PRO PERSON</div>
+    <div class="po-statt" id="stattEl">STATT <s id="stattNum"></s></div>
+  </div>
+
+  <!-- EXTRAS UNTERHALB DES FLYERS -->
+  <div class="extras-section">
+    <div class="ext-header">
+      <div class="ext-pill">✦ NUR MIT DIESER REISE ✦</div>
+      <div class="ext-title">Spezialangebote – 20% Rabatt</div>
+      <div class="ext-sub">Wählen Sie Extras · Preis wird automatisch angepasst</div>
+    </div>
+
+    <div class="ext-grid">
+
+      <button class="ext-btn" onclick="toggle(this,'kochkurs',50,75,60)">
+        <div class="ext-tick">✓</div>
+        <div class="ext-icon">🍲</div>
+        <div class="ext-info">
+          <div class="ext-city">Marrakesch</div>
+          <div class="ext-name">Marokkanischer Kochkurs</div>
+          <div class="ext-prices">
+            <span class="ext-orig">€75</span>
+            <span class="ext-badge">–20%</span>
+          </div>
+          <div class="ext-new">€60 <small>/Pers.</small></div>
+          <div class="ext-plus">+ €50 zur Reise</div>
+        </div>
+      </button>
+
+      <button class="ext-btn" onclick="toggle(this,'hammam',50,85,68)">
+        <div class="ext-tick">✓</div>
+        <div class="ext-icon">💆</div>
+        <div class="ext-info">
+          <div class="ext-city">Agadir</div>
+          <div class="ext-name">Hammam & Massage</div>
+          <div class="ext-prices">
+            <span class="ext-orig">€85</span>
+            <span class="ext-badge">–20%</span>
+          </div>
+          <div class="ext-new">€68 <small>/Pers.</small></div>
+          <div class="ext-plus">+ €50 zur Reise</div>
+        </div>
+      </button>
+
+      <button class="ext-btn" onclick="toggle(this,'souk',50,65,52)">
+        <div class="ext-tick">✓</div>
+        <div class="ext-icon">🏪</div>
+        <div class="ext-info">
+          <div class="ext-city">Marrakesch</div>
+          <div class="ext-name">Privater Souk-Guide</div>
+          <div class="ext-prices">
+            <span class="ext-orig">€65</span>
+            <span class="ext-badge">–20%</span>
+          </div>
+          <div class="ext-new">€52 <small>/Pers.</small></div>
+          <div class="ext-plus">+ €50 zur Reise</div>
+        </div>
+      </button>
+
+      <button class="ext-btn" onclick="toggle(this,'surf',50,90,72)">
+        <div class="ext-tick">✓</div>
+        <div class="ext-icon">🏄</div>
+        <div class="ext-info">
+          <div class="ext-city">Agadir</div>
+          <div class="ext-name">Surfkurs am Atlantik</div>
+          <div class="ext-prices">
+            <span class="ext-orig">€90</span>
+            <span class="ext-badge">–20%</span>
+          </div>
+          <div class="ext-new">€72 <small>/Pers.</small></div>
+          <div class="ext-plus">+ €50 zur Reise</div>
+        </div>
+      </button>
+
+    </div>
+
+    <div class="ext-summary">
+      <div>
+        <div class="es-lbl">Ihre Auswahl</div>
+        <div class="es-sel" id="selText">Noch nichts ausgewählt</div>
+      </div>
+      <div style="text-align:right">
+        <div class="es-total-lbl">Gesamtpreis</div>
+        <div class="es-total" id="totalEl">€ 597</div>
+      </div>
+    </div>
+
+    <button class="cta-btn" onclick="submit()">
+      📅 Jetzt Angebot Anfordern – Kostenlos
+    </button>
+  </div>
+
+</div>
+
+<script>
+const BASE = 597;
+const S = {};
+const N = {
+  kochkurs: 'Kochkurs Marrakesch',
+  hammam:   'Hammam & Massage',
+  souk:     'Souk-Guide',
+  surf:     'Surfkurs Agadir'
+};
+
+function toggle(el, id, add, orig, disc) {
+  S[id] ? (delete S[id], el.classList.remove('on')) : (S[id]={add,orig,disc}, el.classList.add('on'));
+  update();
+}
+
+function update() {
+  const addT  = Object.values(S).reduce((s,v) => s+v.add, 0);
+  const origT = Object.values(S).reduce((s,v) => s+v.orig, 0);
+  const total = BASE + addT;
+
+  const pe = document.getElementById('priceEl');
+  pe.classList.remove('pop'); void pe.offsetWidth; pe.classList.add('pop');
+
+  document.getElementById('priceNum').textContent = total;
+  document.getElementById('totalEl').textContent  = '€ ' + total;
+
+  const sb = document.getElementById('stattEl');
+  if (addT > 0) {
+    sb.style.display = 'block';
+    document.getElementById('stattNum').textContent = '€' + (BASE + origT);
+  } else {
+    sb.style.display = 'none';
+  }
+
+  const keys = Object.keys(S);
+  document.getElementById('selText').textContent =
+    keys.length ? keys.map(k => N[k]).join(' · ') : 'Noch nichts ausgewählt';
+}
+
+function submit() {
+  const keys = Object.keys(S);
+  const total = BASE + Object.values(S).reduce((s,v) => s+v.add, 0);
+  const ext = keys.length
+    ? '\n\nExtras (–20%):\n' + keys.map(k => `• ${N[k]}: €${S[k].disc}/Pers.`).join('\n')
+    : '';
+  alert(`✅ Anfrage gesendet!\n\nMarrakesch & Agadir – 8 Tage\nGrundpreis: €${BASE}${ext}\n\nGesamtpreis: €${total}/Person\n\nWir melden uns in 24 Stunden!`);
+}
+</script>
+</body>
+</html>
