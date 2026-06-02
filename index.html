@@ -1,644 +1,531 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TCM Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<title>TCM Lead System</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 :root {
-  --bg:#f0ede8;
-  --surface:#e8e4dd;
-  --dark:#1a1612;
-  --accent:#c8440a;
-  --accent2:#2d6a4f;
-  --text:#1a1612;
-  --muted:#8a8078;
-  --border:#d4cfc8;
-  --card:#faf8f5;
-  --high:#c8440a;
-  --mid:#d4820a;
-  --low:#2d6a4f;
+  --gold:#c9a84c; --dark:#1a0e00; --warm:#2c1a00;
+  --sand:#f5efe6; --terra:#c1440e; --green:#1b4332;
+  --card:#ffffff; --border:rgba(201,168,76,0.2);
+  --muted:#8b7355; --text:#1a0e00;
 }
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Syne', sans-serif;
-  min-height: 100vh;
-}
-
-/* GRAIN TEXTURE */
-body::before {
-  content: '';
-  position: fixed;
-  top:0; left:0; width:100%; height:100%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 1000;
-  opacity: 0.4;
-}
-
-/* LAYOUT */
-.app { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+body { background:var(--sand); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; display:flex; }
 
 /* SIDEBAR */
-.sidebar {
-  background: var(--dark);
-  padding: 30px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-}
-
-.logo {
-  display: flex; align-items: center; gap: 12px;
-  padding: 0 8px 24px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  margin-bottom: 8px;
-}
-.logo-mark {
-  width: 38px; height: 38px;
-  background: var(--accent);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; font-weight: 800; color: white;
-  letter-spacing: 1px;
-}
-.logo-text { font-size: 15px; font-weight: 700; color: white; line-height: 1.2; }
-.logo-sub { font-size: 10px; color: rgba(255,255,255,0.4); font-family: 'DM Mono', monospace; }
-
-.nav-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 13px; font-weight: 600;
-  color: rgba(255,255,255,0.5);
-  transition: all 0.2s;
-  letter-spacing: 0.3px;
-}
-.nav-item:hover { background: rgba(255,255,255,0.07); color: white; }
-.nav-item.active { background: var(--accent); color: white; }
-.nav-icon { font-size: 16px; width: 20px; text-align: center; }
-
-.nav-section {
-  font-size: 10px; color: rgba(255,255,255,0.25);
-  letter-spacing: 2px; text-transform: uppercase;
-  padding: 16px 12px 6px;
-  font-family: 'DM Mono', monospace;
-}
-
-.sidebar-footer {
-  margin-top: auto;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255,255,255,0.1);
-}
-.user-info {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 12px;
-  border-radius: 8px;
-}
-.user-avatar {
-  width: 32px; height: 32px; border-radius: 50%;
-  background: var(--accent);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 700; color: white;
-}
-.user-name { font-size: 12px; font-weight: 600; color: white; }
-.user-role { font-size: 10px; color: rgba(255,255,255,0.4); font-family: 'DM Mono', monospace; }
+.sidebar { width:240px; min-height:100vh; background:var(--dark); padding:28px 16px; display:flex; flex-direction:column; position:fixed; left:0; top:0; bottom:0; z-index:100; }
+.logo { text-align:center; padding-bottom:24px; border-bottom:1px solid rgba(201,168,76,0.2); margin-bottom:20px; }
+.logo-circle { width:56px; height:56px; background:linear-gradient(135deg,var(--gold),#e8c870); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-weight:700; font-size:16px; color:var(--dark); margin:0 auto 10px; }
+.logo-name { font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--gold); letter-spacing:2px; }
+.logo-sub { font-size:10px; color:rgba(201,168,76,0.4); letter-spacing:2px; text-transform:uppercase; margin-top:2px; }
+.nav-section { font-size:10px; color:rgba(201,168,76,0.3); letter-spacing:2px; text-transform:uppercase; padding:14px 10px 6px; font-family:'DM Mono',monospace; }
+.nav-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:8px; cursor:pointer; font-size:13px; color:rgba(255,255,255,0.45); margin-bottom:2px; transition:all 0.2s; }
+.nav-item:hover { background:rgba(201,168,76,0.1); color:rgba(255,255,255,0.8); }
+.nav-item.active { background:rgba(201,168,76,0.15); color:var(--gold); border:1px solid rgba(201,168,76,0.25); }
+.nav-badge { margin-left:auto; background:var(--terra); color:white; border-radius:10px; padding:1px 7px; font-size:10px; font-weight:700; }
+.sidebar-bottom { margin-top:auto; padding-top:16px; border-top:1px solid rgba(201,168,76,0.15); }
+.user-card { display:flex; align-items:center; gap:10px; padding:10px 12px; background:rgba(201,168,76,0.08); border-radius:10px; border:1px solid rgba(201,168,76,0.15); }
+.user-av { width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,var(--gold),#e8c870); display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--dark); font-size:13px; flex-shrink:0; }
+.user-name { font-size:12px; font-weight:600; color:var(--gold); }
+.user-role { font-size:10px; color:rgba(201,168,76,0.4); }
+.live-badge { display:flex; align-items:center; gap:6px; font-size:10px; color:var(--green); font-family:'DM Mono',monospace; margin-bottom:10px; justify-content:center; }
+.live-dot { width:6px; height:6px; border-radius:50%; background:#34d399; animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
 /* MAIN */
-.main { padding: 30px; overflow-y: auto; }
+.main { margin-left:240px; flex:1; padding:28px; }
+.page { display:none; }
+.page.active { display:block; }
 
 /* HEADER */
-.header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 28px;
-}
-.header-left h1 { font-size: 26px; font-weight: 800; color: var(--text); }
-.header-left p { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; margin-top: 2px; }
-.header-right { display: flex; gap: 10px; align-items: center; }
-.btn {
-  padding: 9px 18px; border-radius: 8px; font-size: 12px;
-  font-weight: 700; cursor: pointer; border: none;
-  font-family: 'Syne', sans-serif; letter-spacing: 0.5px;
-  transition: all 0.2s;
-}
-.btn-primary { background: var(--accent); color: white; }
-.btn-primary:hover { background: #a33608; }
-.btn-ghost { background: transparent; color: var(--muted); border: 1.5px solid var(--border); }
-.btn-ghost:hover { border-color: var(--text); color: var(--text); }
+.header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; }
+.header h1 { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:600; }
+.header p { font-size:12px; color:var(--muted); margin-top:3px; letter-spacing:0.5px; }
+.btn-primary { background:var(--dark); color:var(--gold); border:1px solid rgba(201,168,76,0.3); border-radius:10px; padding:10px 20px; font-size:13px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; }
+.btn-primary:hover { background:var(--gold); color:var(--dark); }
 
-/* STATS ROW */
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
-.stat-card {
-  background: var(--card);
-  border: 1.5px solid var(--border);
-  border-radius: 14px;
-  padding: 18px 20px;
-  position: relative;
-  overflow: hidden;
-}
-.stat-card::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0; height: 3px;
-}
-.stat-card.s1::after { background: var(--accent); }
-.stat-card.s2::after { background: var(--mid); }
-.stat-card.s3::after { background: var(--low); }
-.stat-card.s4::after { background: #7b5ea7; }
-.stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; font-family: 'DM Mono', monospace; margin-bottom: 10px; }
-.stat-num { font-size: 36px; font-weight: 800; color: var(--text); line-height: 1; }
-.stat-change { font-size: 11px; color: var(--low); font-family: 'DM Mono', monospace; margin-top: 6px; }
+/* STATS */
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
+.stat { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px 20px; position:relative; overflow:hidden; }
+.stat::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+.stat.s1::before { background:linear-gradient(90deg,var(--terra),#e8693a); }
+.stat.s2::before { background:linear-gradient(90deg,#d97706,#fbbf24); }
+.stat.s3::before { background:linear-gradient(90deg,var(--green),#34d399); }
+.stat.s4::before { background:linear-gradient(90deg,var(--gold),#e8c870); }
+.stat-n { font-family:'Cormorant Garamond',serif; font-size:38px; font-weight:600; color:var(--dark); line-height:1; }
+.stat-l { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin-top:5px; font-family:'DM Mono',monospace; }
+.stat-delta { font-size:11px; color:var(--green); margin-top:4px; font-family:'DM Mono',monospace; }
 
 /* GRID */
-.grid-main { display: grid; grid-template-columns: 1fr 340px; gap: 16px; }
+.grid { display:grid; grid-template-columns:1fr 320px; gap:16px; }
 
-/* LEADS TABLE */
-.panel {
-  background: var(--card);
-  border: 1.5px solid var(--border);
-  border-radius: 14px;
-  overflow: hidden;
-}
-.panel-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 18px 20px;
-  border-bottom: 1.5px solid var(--border);
-}
-.panel-title { font-size: 14px; font-weight: 700; }
-.panel-action { font-size: 11px; color: var(--accent); cursor: pointer; font-weight: 600; }
+/* PANEL */
+.panel { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+.panel-header { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; border-bottom:1px solid var(--border); background:linear-gradient(to right,rgba(201,168,76,0.04),transparent); }
+.panel-title { font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:600; }
+.panel-link { font-size:11px; color:var(--gold); cursor:pointer; font-weight:600; }
 
-/* FILTER TABS */
-.tabs { display: flex; gap: 4px; padding: 14px 20px; border-bottom: 1.5px solid var(--border); }
-.tab {
-  padding: 6px 14px; border-radius: 20px; font-size: 11px;
-  font-weight: 700; cursor: pointer; border: 1.5px solid transparent;
-  transition: all 0.2s; font-family: 'Syne', sans-serif;
-}
-.tab.active { background: var(--dark); color: white; }
-.tab:not(.active) { color: var(--muted); border-color: var(--border); }
-.tab:not(.active):hover { border-color: var(--text); color: var(--text); }
+/* TABS */
+.tabs { display:flex; gap:4px; padding:12px 20px; border-bottom:1px solid var(--border); background:#fdfaf6; }
+.tab { padding:5px 14px; border-radius:20px; font-size:11px; font-weight:700; cursor:pointer; border:1.5px solid transparent; transition:all 0.2s; font-family:'DM Sans',sans-serif; }
+.tab.active { background:var(--dark); color:white; }
+.tab:not(.active) { color:var(--muted); border-color:var(--border); }
+.tab:not(.active):hover { border-color:var(--dark); color:var(--dark); }
 
-/* LEAD ROWS */
-.lead-row {
-  display: grid;
-  grid-template-columns: 24px 1fr 100px 90px 80px 120px;
-  gap: 12px;
-  align-items: center;
-  padding: 14px 20px;
-  border-bottom: 1px solid var(--border);
-  transition: background 0.15s;
-  cursor: pointer;
-}
-.lead-row:last-child { border-bottom: none; }
-.lead-row:hover { background: var(--surface); }
+/* SECTION LABEL */
+.section-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:2px; padding:9px 20px; background:#fdfaf6; border-bottom:1px solid rgba(201,168,76,0.08); font-family:'DM Mono',monospace; }
 
-.lead-header-row {
-  display: grid;
-  grid-template-columns: 24px 1fr 100px 90px 80px 120px;
-  gap: 12px;
-  padding: 10px 20px;
-  background: var(--surface);
-  border-bottom: 1.5px solid var(--border);
-}
-.col-h { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-family: 'DM Mono', monospace; font-weight: 500; }
-
-.prio-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.prio-high { background: var(--high); box-shadow: 0 0 6px rgba(200,68,10,0.5); }
-.prio-mid { background: var(--mid); }
-.prio-low { background: var(--low); }
-
-.lead-name { font-size: 13px; font-weight: 700; }
-.lead-detail { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; margin-top: 2px; }
-
-.badge-dest {
-  font-size: 10px; font-weight: 700;
-  padding: 4px 10px; border-radius: 20px;
-  text-transform: uppercase; letter-spacing: 1px;
-  display: inline-block;
-}
-.dest-mar { background: rgba(200,68,10,0.12); color: var(--accent); }
-.dest-egy { background: rgba(45,106,79,0.12); color: var(--accent2); }
-.dest-tun { background: rgba(123,94,167,0.15); color: #7b5ea7; }
-
-.badge-lang {
-  font-size: 10px; font-family: 'DM Mono', monospace;
-  color: var(--muted);
-}
-
-.badge-status {
-  font-size: 10px; font-weight: 700;
-  padding: 4px 10px; border-radius: 20px;
-  display: inline-block; letter-spacing: 0.5px;
-}
-.status-new { background: rgba(200,68,10,0.1); color: var(--accent); }
-.status-sent { background: rgba(45,106,79,0.1); color: var(--accent2); }
-.status-wait { background: rgba(212,130,10,0.1); color: var(--mid); }
-
-.action-btn {
-  background: var(--dark); color: white;
-  border: none; border-radius: 7px;
-  padding: 7px 14px; font-size: 11px;
-  font-weight: 700; cursor: pointer;
-  font-family: 'Syne', sans-serif;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
-.action-btn:hover { background: var(--accent); }
-.action-btn.sent { background: transparent; color: var(--low); border: 1.5px solid rgba(45,106,79,0.3); }
-.action-btn.waiting { background: transparent; color: var(--mid); border: 1.5px solid rgba(212,130,10,0.3); }
+/* LEAD ROW */
+.lead-row { display:grid; grid-template-columns:10px 1fr 100px 85px 110px; gap:14px; padding:14px 20px; border-bottom:1px solid rgba(201,168,76,0.08); align-items:center; transition:background 0.15s; cursor:pointer; }
+.lead-row:last-child { border-bottom:none; }
+.lead-row:hover { background:rgba(201,168,76,0.04); }
+.lead-row.selected { background:rgba(201,168,76,0.08); border-left:3px solid var(--gold); }
+.prio { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.prio-h { background:var(--terra); box-shadow:0 0 5px rgba(193,68,14,0.4); }
+.prio-m { background:#d97706; }
+.prio-l { background:var(--green); }
+.lead-name { font-size:13px; font-weight:600; }
+.lead-info { font-size:11px; color:var(--muted); margin-top:2px; font-family:'DM Mono',monospace; }
+.badge { font-size:10px; padding:4px 10px; border-radius:20px; font-weight:700; display:inline-block; letter-spacing:0.5px; }
+.badge-mar { background:rgba(193,68,14,0.1); color:var(--terra); }
+.badge-egy { background:rgba(27,67,50,0.1); color:var(--green); }
+.badge-tun { background:rgba(109,40,217,0.1); color:#7c3aed; }
+.badge-hol { background:rgba(37,99,235,0.1); color:#1d4ed8; }
+.status-new { background:rgba(193,68,14,0.1); color:var(--terra); }
+.status-sent { background:rgba(27,67,50,0.1); color:var(--green); }
+.status-wait { background:rgba(217,119,6,0.1); color:#d97706; }
+.btn-send { background:var(--dark); color:var(--gold); border:1px solid rgba(201,168,76,0.3); border-radius:7px; padding:7px 12px; font-size:11px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; white-space:nowrap; }
+.btn-send:hover { background:var(--gold); color:var(--dark); }
+.btn-done { background:transparent; color:var(--muted); border:1px solid var(--border); border-radius:7px; padding:7px 12px; font-size:11px; cursor:pointer; }
 
 /* RIGHT PANEL */
-.right-col { display: flex; flex-direction: column; gap: 16px; }
+.detail-panel { background:var(--dark); border-radius:14px; padding:20px; color:white; margin-bottom:14px; }
+.detail-label { font-size:10px; color:rgba(201,168,76,0.4); text-transform:uppercase; letter-spacing:2px; margin-bottom:14px; font-family:'DM Mono',monospace; }
+.detail-name { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; color:var(--gold); margin-bottom:3px; }
+.detail-id { font-size:10px; color:rgba(201,168,76,0.4); font-family:'DM Mono',monospace; margin-bottom:16px; }
+.detail-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
+.detail-row:last-of-type { border-bottom:none; }
+.d-key { font-size:11px; color:rgba(255,255,255,0.35); font-family:'DM Mono',monospace; }
+.d-val { font-size:12px; font-weight:600; color:white; }
+.d-val.gold { color:var(--gold); }
+.d-val.red { color:#f87171; }
+.d-val.green { color:#34d399; }
 
-/* DETAIL PANEL */
-.detail-panel {
-  background: var(--dark);
-  border-radius: 14px;
-  padding: 20px;
-  color: white;
-}
-.detail-title { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 2px; font-family: 'DM Mono', monospace; margin-bottom: 16px; }
-.detail-name { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
-.detail-sub { font-size: 11px; color: rgba(255,255,255,0.5); font-family: 'DM Mono', monospace; margin-bottom: 20px; }
-.detail-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
-.detail-row:last-of-type { border-bottom: none; }
-.detail-key { font-size: 11px; color: rgba(255,255,255,0.4); font-family: 'DM Mono', monospace; }
-.detail-val { font-size: 12px; font-weight: 600; color: white; }
-.detail-val.high { color: #ff6b3d; }
-.detail-val.green { color: #56cfb2; }
+/* UPLOAD AREA */
+.upload-area { border:2px dashed rgba(201,168,76,0.2); border-radius:10px; padding:16px; text-align:center; cursor:pointer; margin-top:14px; transition:all 0.2s; }
+.upload-area:hover { border-color:var(--gold); background:rgba(201,168,76,0.05); }
+.upload-icon { font-size:24px; margin-bottom:6px; }
+.upload-text { font-size:11px; color:rgba(255,255,255,0.4); }
+.upload-sub { font-size:10px; color:rgba(255,255,255,0.2); margin-top:2px; font-family:'DM Mono',monospace; }
 
-.tips-area {
-  margin-top: 16px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 10px;
-  padding: 12px;
-}
-.tips-label { font-size: 10px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 2px; font-family: 'DM Mono', monospace; margin-bottom: 8px; }
-.tips-input {
-  width: 100%; background: transparent; border: none;
-  color: white; font-family: 'Syne', sans-serif; font-size: 12px;
-  resize: none; outline: none; line-height: 1.6;
-  min-height: 60px;
-}
-.tips-input::placeholder { color: rgba(255,255,255,0.2); }
+/* TIPS */
+.tips-box { background:rgba(255,255,255,0.05); border-radius:10px; padding:12px; margin-top:12px; }
+.tips-label { font-size:10px; color:rgba(201,168,76,0.4); text-transform:uppercase; letter-spacing:2px; margin-bottom:8px; font-family:'DM Mono',monospace; }
+.tips-input { width:100%; background:transparent; border:none; color:white; font-family:'DM Sans',sans-serif; font-size:12px; resize:none; outline:none; min-height:60px; line-height:1.6; }
+.tips-input::placeholder { color:rgba(255,255,255,0.2); }
 
-.send-btn {
-  width: 100%; margin-top: 14px;
-  background: var(--accent);
-  color: white; border: none;
-  border-radius: 10px; padding: 13px;
-  font-size: 13px; font-weight: 800;
-  cursor: pointer; font-family: 'Syne', sans-serif;
-  letter-spacing: 1px; text-transform: uppercase;
-  transition: all 0.2s;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-}
-.send-btn:hover { background: #a33608; transform: translateY(-1px); }
-
-.upload-area {
-  border: 2px dashed rgba(255,255,255,0.15);
-  border-radius: 10px;
-  padding: 16px;
-  text-align: center;
-  cursor: pointer;
-  margin-top: 12px;
-  transition: all 0.2s;
-}
-.upload-area:hover { border-color: var(--accent); background: rgba(200,68,10,0.05); }
-.upload-icon { font-size: 24px; margin-bottom: 6px; }
-.upload-text { font-size: 11px; color: rgba(255,255,255,0.4); }
-.upload-sub { font-size: 10px; color: rgba(255,255,255,0.2); font-family: 'DM Mono', monospace; margin-top: 3px; }
+/* SEND BUTTON */
+.send-btn { width:100%; margin-top:14px; background:linear-gradient(135deg,var(--terra),#d4571a); color:white; border:none; border-radius:10px; padding:13px; font-size:13px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; letter-spacing:1px; text-transform:uppercase; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px; }
+.send-btn:hover { transform:translateY(-1px); box-shadow:0 4px 15px rgba(193,68,14,0.3); }
+.send-btn.sent { background:linear-gradient(135deg,var(--green),#2d9a65); }
 
 /* MINI STATS */
-.mini-stats {
-  background: var(--card);
-  border: 1.5px solid var(--border);
-  border-radius: 14px;
-  padding: 18px 20px;
-}
-.mini-title { font-size: 12px; font-weight: 700; margin-bottom: 14px; }
-.mini-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); }
-.mini-row:last-child { border-bottom: none; }
-.mini-label { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
-.mini-val { font-size: 13px; font-weight: 700; font-family: 'DM Mono', monospace; }
+.mini-panel { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px 20px; }
+.mini-title { font-family:'Cormorant Garamond',serif; font-size:16px; font-weight:600; margin-bottom:14px; }
+.mini-row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(201,168,76,0.08); }
+.mini-row:last-child { border-bottom:none; }
+.mini-label { font-size:12px; color:var(--muted); display:flex; align-items:center; gap:8px; }
+.mini-val { font-size:13px; font-weight:700; font-family:'DM Mono',monospace; color:var(--dark); }
 
-/* NOTIFICATION DOT */
-.notif {
-  width: 18px; height: 18px; border-radius: 50%;
-  background: var(--accent); color: white;
-  font-size: 10px; font-weight: 700;
-  display: flex; align-items: center; justify-content: center;
-  margin-left: auto;
-}
+/* TERMINAL */
+.terminal { background:#0a0e1a; border-radius:14px; padding:0; overflow:hidden; margin-top:16px; }
+.term-header { background:#111827; padding:10px 16px; display:flex; align-items:center; gap:6px; border-bottom:1px solid #1e2736; }
+.term-dot { width:10px; height:10px; border-radius:50%; }
+.term-title { font-size:11px; color:#4b5563; margin-left:auto; font-family:'DM Mono',monospace; }
+.term-body { padding:14px 16px; font-family:'DM Mono',monospace; font-size:12px; color:#94a3b8; line-height:2; max-height:200px; overflow-y:auto; }
+.term-line { display:flex; align-items:center; gap:8px; }
+.term-ok { color:#34d399; }
+.term-err { color:#f87171; }
+.term-info { color:#60a5fa; }
+.term-warn { color:#fbbf24; }
 
-/* PULSE ANIMATION */
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-.live { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--low); font-family: 'DM Mono', monospace; }
-.live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--low); animation: pulse 2s infinite; }
+/* SECRET BUTTON */
+.secret-btn { width:100%; margin-top:8px; background:linear-gradient(135deg,#7c3aed,#5b21b6); color:white; border:none; border-radius:10px; padding:11px; font-size:12px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; letter-spacing:1px; transition:all 0.2s; }
+.secret-btn:hover { transform:translateY(-1px); }
+
+/* TOAST */
+.toast { position:fixed; bottom:30px; right:30px; background:var(--dark); color:var(--gold); padding:14px 20px; border-radius:12px; border:1px solid rgba(201,168,76,0.3); font-size:13px; font-weight:600; z-index:1000; transform:translateY(100px); opacity:0; transition:all 0.4s; }
+.toast.show { transform:translateY(0); opacity:1; }
 
 @media(max-width:900px) {
-  .app { grid-template-columns: 1fr; }
-  .sidebar { display: none; }
-  .stats { grid-template-columns: repeat(2,1fr); }
-  .grid-main { grid-template-columns: 1fr; }
-  .lead-row, .lead-header-row { grid-template-columns: 20px 1fr 90px; }
-  .lead-row > *:nth-child(n+4), .lead-header-row > *:nth-child(n+4) { display: none; }
+  .sidebar { display:none; }
+  .main { margin-left:0; padding:16px; }
+  .stats { grid-template-columns:repeat(2,1fr); }
+  .grid { grid-template-columns:1fr; }
+  .lead-row { grid-template-columns:10px 1fr 85px; }
+  .lead-row > *:nth-child(4), .lead-row > *:nth-child(5) { display:none; }
 }
 </style>
 </head>
 <body>
-<div class="app">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="logo">
-      <div class="logo-mark">TCM</div>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-circle">TCM</div>
+    <div class="logo-name">SAHARA CRM</div>
+    <div class="logo-sub">Travel Concept Morocco</div>
+  </div>
+
+  <div class="nav-section">Main Menu</div>
+  <div class="nav-item active" onclick="showPage('dashboard')">◈ Dashboard</div>
+  <div class="nav-item" onclick="showPage('leads')">◈ New Leads <span class="nav-badge" id="lead-count">3</span></div>
+  <div class="nav-item" onclick="showPage('sent')">◈ Sent Offers</div>
+  <div class="nav-item">◈ Statistics</div>
+
+  <div class="nav-section">Management</div>
+  <div class="nav-item">◈ Hotels</div>
+  <div class="nav-item">◈ Google Sheet</div>
+  <div class="nav-item">◈ Settings</div>
+
+  <div class="sidebar-bottom">
+    <div class="live-badge"><div class="live-dot"></div> System Active</div>
+    <div class="user-card">
+      <div class="user-av">H</div>
       <div>
-        <div class="logo-text">Lead System</div>
-        <div class="logo-sub">v1.0 — DEMO</div>
+        <div class="user-name">Hicham Fahmi</div>
+        <div class="user-role">TCM Morocco</div>
       </div>
     </div>
+  </div>
+</aside>
 
-    <div class="nav-section">Hauptmenü</div>
-    <div class="nav-item active"><span class="nav-icon">📊</span> Dashboard</div>
-    <div class="nav-item"><span class="nav-icon">📥</span> Neue Leads <div class="notif">3</div></div>
-    <div class="nav-item"><span class="nav-icon">📤</span> Gesendet</div>
-    <div class="nav-item"><span class="nav-icon">⏳</span> In Bearbeitung</div>
+<!-- MAIN -->
+<main class="main">
 
-    <div class="nav-section">Verwaltung</div>
-    <div class="nav-item"><span class="nav-icon">🏨</span> Hotels</div>
-    <div class="nav-item"><span class="nav-icon">✈️</span> Flüge</div>
-    <div class="nav-item"><span class="nav-icon">📋</span> Google Sheet</div>
-    <div class="nav-item"><span class="nav-icon">📈</span> Statistiken</div>
-
-    <div class="nav-section">System</div>
-    <div class="nav-item"><span class="nav-icon">⚙️</span> Einstellungen</div>
-
-    <div class="sidebar-footer">
-      <div class="live"><div class="live-dot"></div> System aktiv</div>
-      <div class="user-info" style="margin-top:12px">
-        <div class="user-avatar">H</div>
-        <div>
-          <div class="user-name">Hicham Fahmi</div>
-          <div class="user-role">TCM Morocco</div>
-        </div>
-      </div>
-    </div>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="main">
-
-    <!-- HEADER -->
+  <!-- DASHBOARD PAGE -->
+  <div class="page active" id="page-dashboard">
     <div class="header">
-      <div class="header-left">
+      <div>
         <h1>Lead Dashboard</h1>
-        <p>Montag, 1. Juni 2026 — 10:32 Uhr</p>
+        <p id="current-date">Loading...</p>
       </div>
-      <div class="header-right">
-        <div class="live"><div class="live-dot"></div> Live</div>
-        <button class="btn btn-ghost">Filter</button>
-        <button class="btn btn-primary">+ Neuer Lead</button>
+      <div style="display:flex;gap:10px;align-items:center">
+        <div class="live-badge" style="background:rgba(52,211,153,0.1);padding:6px 12px;border-radius:20px;border:1px solid rgba(52,211,153,0.2)"><div class="live-dot"></div> Live</div>
+        <button class="btn-primary" onclick="addTestLead()">+ Simulate Lead</button>
       </div>
     </div>
 
-    <!-- STATS -->
     <div class="stats">
-      <div class="stat-card s1">
-        <div class="stat-label">Heute Neu</div>
-        <div class="stat-num">12</div>
-        <div class="stat-change">↑ +4 vs. gestern</div>
-      </div>
-      <div class="stat-card s2">
-        <div class="stat-label">In Bearbeitung</div>
-        <div class="stat-num">5</div>
-        <div class="stat-change">→ 2 warten auf Angebot</div>
-      </div>
-      <div class="stat-card s3">
-        <div class="stat-label">Gesendet</div>
-        <div class="stat-num">7</div>
-        <div class="stat-change">↑ 3 haben geantwortet</div>
-      </div>
-      <div class="stat-card s4">
-        <div class="stat-label">Marge heute</div>
-        <div class="stat-num">€840</div>
-        <div class="stat-change">↑ +€120 vs. gestern</div>
-      </div>
+      <div class="stat s1"><div class="stat-n" id="stat-new">3</div><div class="stat-l">New Today</div><div class="stat-delta">↑ +2 vs yesterday</div></div>
+      <div class="stat s2"><div class="stat-n" id="stat-progress">2</div><div class="stat-l">In Progress</div><div class="stat-delta">→ 1 waiting</div></div>
+      <div class="stat s3"><div class="stat-n" id="stat-sent">5</div><div class="stat-l">Sent Today</div><div class="stat-delta">↑ 3 replied</div></div>
+      <div class="stat s4"><div class="stat-n" id="stat-margin">€640</div><div class="stat-l">Margin Today</div><div class="stat-delta">↑ +€120</div></div>
     </div>
 
-    <!-- MAIN GRID -->
-    <div class="grid-main">
+    <div class="grid">
+      <div>
+        <div class="panel" style="margin-bottom:16px">
+          <div class="panel-header">
+            <span class="panel-title">Today's Leads</span>
+            <span class="panel-link">View all →</span>
+          </div>
+          <div class="tabs">
+            <div class="tab active" onclick="filterLeads('all',this)">All (7)</div>
+            <div class="tab" onclick="filterLeads('high',this)">🔴 High (3)</div>
+            <div class="tab" onclick="filterLeads('mid',this)">🟡 Medium (2)</div>
+            <div class="tab" onclick="filterLeads('low',this)">🟢 Normal (2)</div>
+          </div>
 
-      <!-- LEADS TABLE -->
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">Alle Leads heute</div>
-          <div class="panel-action">Alle ansehen →</div>
-        </div>
-        <div class="tabs">
-          <div class="tab active">Alle (12)</div>
-          <div class="tab">🔴 Hoch (3)</div>
-          <div class="tab">🟡 Mittel (5)</div>
-          <div class="tab">🟢 Normal (4)</div>
-        </div>
-        <div class="lead-header-row">
-          <div class="col-h"></div>
-          <div class="col-h">Kunde</div>
-          <div class="col-h">Zielgebiet</div>
-          <div class="col-h">Sprache</div>
-          <div class="col-h">Status</div>
-          <div class="col-h">Aktion</div>
+          <div id="leads-container">
+            <div class="section-label">✦ High Priority</div>
+
+            <div class="lead-row" data-prio="high" onclick="selectLead(this,'Familie Müller','LEAD-2026-0602-001','6 Persons · 2 Weeks · €8,000','Morocco','🇩🇪 German','HIGH','Hicham','Lamia')">
+              <div class="prio prio-h"></div>
+              <div><div class="lead-name">Familie Müller</div><div class="lead-info">6P · 2W · €8,000 · 🇩🇪</div></div>
+              <span class="badge badge-mar">Morocco</span>
+              <span class="badge status-new">New</span>
+              <button class="btn-send" onclick="event.stopPropagation();sendLead(this,'Familie Müller')">▶ Send</button>
+            </div>
+
+            <div class="lead-row" data-prio="high" onclick="selectLead(this,'Van der Berg','LEAD-2026-0602-002','4 Persons · 10 Days · €5,500','Morocco','🇳🇱 Dutch','HIGH','Samir','Samir')">
+              <div class="prio prio-h"></div>
+              <div><div class="lead-name">Van der Berg</div><div class="lead-info">4P · 10D · €5,500 · 🇳🇱</div></div>
+              <span class="badge badge-mar">Morocco</span>
+              <span class="badge status-new">New</span>
+              <button class="btn-send" onclick="event.stopPropagation();sendLead(this,'Van der Berg')">▶ Send</button>
+            </div>
+
+            <div class="lead-row" data-prio="high" onclick="selectLead(this,'السيد أحمد حسن','LEAD-2026-0602-003','5 Persons · 1 Week · €6,000','Morocco','🇸🇦 Arabic','HIGH','Lamia','Lamia')">
+              <div class="prio prio-h"></div>
+              <div><div class="lead-name">السيد أحمد حسن</div><div class="lead-info">5P · 1W · €6,000 · 🇸🇦</div></div>
+              <span class="badge badge-mar">Morocco</span>
+              <span class="badge status-new">New</span>
+              <button class="btn-send" onclick="event.stopPropagation();sendLead(this,'Ahmed Hassan')">▶ Send</button>
+            </div>
+
+            <div class="section-label">◈ Medium Priority</div>
+
+            <div class="lead-row" data-prio="mid" onclick="selectLead(this,'Famille Dupont','LEAD-2026-0602-004','4 Persons · 10 Days · €5,000','Egypt','🇫🇷 French','MEDIUM','Lamia','Lamia')">
+              <div class="prio prio-m"></div>
+              <div><div class="lead-name">Famille Dupont</div><div class="lead-info">4P · 10D · €5,000 · 🇫🇷</div></div>
+              <span class="badge badge-egy">Egypt</span>
+              <span class="badge status-wait">Waiting</span>
+              <button class="btn-send" onclick="event.stopPropagation();sendLead(this,'Famille Dupont')">▶ Send</button>
+            </div>
+
+            <div class="lead-row" data-prio="mid" onclick="selectLead(this,'De heer Janssen','LEAD-2026-0602-005','3 Persons · 1 Week · €4,000','Morocco','🇳🇱 Dutch','MEDIUM','Samir','Samir')">
+              <div class="prio prio-m"></div>
+              <div><div class="lead-name">De heer Janssen</div><div class="lead-info">3P · 1W · €4,000 · 🇳🇱</div></div>
+              <span class="badge badge-mar">Morocco</span>
+              <span class="badge status-wait">Waiting</span>
+              <button class="btn-send" onclick="event.stopPropagation();sendLead(this,'De heer Janssen')">▶ Send</button>
+            </div>
+
+            <div class="section-label">✓ Sent</div>
+
+            <div class="lead-row" data-prio="low" onclick="selectLead(this,'Jan de Vries','LEAD-2026-0602-006','2 Persons · 1 Week · €2,000','Morocco','🇳🇱 Dutch','NORMAL','Samir','Samir')">
+              <div class="prio prio-l"></div>
+              <div><div class="lead-name">Jan de Vries</div><div class="lead-info">2P · 1W · €2,000 · 🇳🇱</div></div>
+              <span class="badge badge-mar">Morocco</span>
+              <span class="badge status-sent">Sent ✓</span>
+              <button class="btn-done">✓ Done</button>
+            </div>
+
+            <div class="lead-row" data-prio="low" onclick="selectLead(this,'Marie Martin','LEAD-2026-0602-007','2 Persons · 5 Days · €1,800','Morocco','🇫🇷 French','NORMAL','Lamia','Lamia')">
+              <div class="prio prio-l"></div>
+              <div><div class="lead-name">Marie Martin</div><div class="lead-info">2P · 5D · €1,800 · 🇫🇷</div></div>
+              <span class="badge badge-mar">Morocco</span>
+              <span class="badge status-sent">Sent ✓</span>
+              <button class="btn-done">✓ Done</button>
+            </div>
+          </div>
         </div>
 
-        <div class="lead-row">
-          <div class="prio-dot prio-high"></div>
-          <div><div class="lead-name">Familie Müller</div><div class="lead-detail">6P · 2 Wochen · €8.000</div></div>
-          <div><span class="badge-dest dest-mar">Marokko</span></div>
-          <div class="badge-lang">🇩🇪 DE</div>
-          <div><span class="badge-status status-new">Neu</span></div>
-          <button class="action-btn" onclick="selectLead(this, 'Müller Familie', '6 Personen', 'Marokko', '🇩🇪 Deutsch', '€8.000', 'HOCH')">▶ Senden</button>
+        <!-- TERMINAL -->
+        <div class="terminal">
+          <div class="term-header">
+            <div class="term-dot" style="background:#ff5f56"></div>
+            <div class="term-dot" style="background:#ffbd2e"></div>
+            <div class="term-dot" style="background:#27c93f"></div>
+            <div class="term-title">TCM Agent — Live Log</div>
+          </div>
+          <div class="term-body" id="terminal">
+            <div class="term-line"><span class="term-ok">✓</span><span>System started — TCM Lead Agent v1.0</span></div>
+            <div class="term-line"><span class="term-ok">✓</span><span>Connected to Google Sheets</span></div>
+            <div class="term-line"><span class="term-ok">✓</span><span>ElevenLabs Voice: Lamia + Samir ready</span></div>
+            <div class="term-line"><span class="term-ok">✓</span><span>SMTP: mail.antagonist.nl connected</span></div>
+            <div class="term-line"><span class="term-info">→</span><span>Waiting for new leads...</span></div>
+          </div>
         </div>
-
-        <div class="lead-row">
-          <div class="prio-dot prio-high"></div>
-          <div><div class="lead-name">Van der Berg</div><div class="lead-detail">4P · 10 Tage · €5.500</div></div>
-          <div><span class="badge-dest dest-mar">Marokko</span></div>
-          <div class="badge-lang">🇳🇱 NL</div>
-          <div><span class="badge-status status-new">Neu</span></div>
-          <button class="action-btn" onclick="selectLead(this, 'Van der Berg', '4 Personen', 'Marokko', '🇳🇱 Holländisch', '€5.500', 'HOCH')">▶ Senden</button>
-        </div>
-
-        <div class="lead-row">
-          <div class="prio-dot prio-mid"></div>
-          <div><div class="lead-name">Familie Dupont</div><div class="lead-detail">3P · 1 Woche · €3.200</div></div>
-          <div><span class="badge-dest dest-egy">Ägypten</span></div>
-          <div class="badge-lang">🇫🇷 FR</div>
-          <div><span class="badge-status status-new">Neu</span></div>
-          <button class="action-btn" onclick="selectLead(this, 'Familie Dupont', '3 Personen', 'Ägypten', '🇫🇷 Französisch', '€3.200', 'MITTEL')">▶ Senden</button>
-        </div>
-
-        <div class="lead-row">
-          <div class="prio-dot prio-mid"></div>
-          <div><div class="lead-name">Thomas Schmidt</div><div class="lead-detail">2P · 5 Tage · €2.400</div></div>
-          <div><span class="badge-dest dest-mar">Marokko</span></div>
-          <div class="badge-lang">🇩🇪 DE</div>
-          <div><span class="badge-status status-wait">Wartet</span></div>
-          <button class="action-btn waiting">⏳ Warten</button>
-        </div>
-
-        <div class="lead-row">
-          <div class="prio-dot prio-low"></div>
-          <div><div class="lead-name">Jan de Vries</div><div class="lead-detail">2P · 1 Woche · €2.000</div></div>
-          <div><span class="badge-dest dest-tun">Tunesien</span></div>
-          <div class="badge-lang">🇳🇱 NL</div>
-          <div><span class="badge-status status-sent">Gesendet</span></div>
-          <button class="action-btn sent">✓ Gesendet</button>
-        </div>
-
-        <div class="lead-row">
-          <div class="prio-dot prio-low"></div>
-          <div><div class="lead-name">Marie Martin</div><div class="lead-detail">2P · 5 Tage · €1.800</div></div>
-          <div><span class="badge-dest dest-mar">Marokko</span></div>
-          <div class="badge-lang">🇫🇷 FR</div>
-          <div><span class="badge-status status-sent">Gesendet</span></div>
-          <button class="action-btn sent">✓ Gesendet</button>
-        </div>
-
       </div>
 
-      <!-- RIGHT COL -->
-      <div class="right-col">
+      <!-- RIGHT PANEL -->
+      <div>
+        <div class="detail-panel">
+          <div class="detail-label">Lead Details</div>
+          <div class="detail-name" id="d-name">Select a Lead</div>
+          <div class="detail-id" id="d-id">Click on any lead to see details</div>
 
-        <!-- DETAIL PANEL -->
-        <div class="detail-panel" id="detail-panel">
-          <div class="detail-title">Lead Details</div>
-          <div class="detail-name" id="d-name">Familie Müller</div>
-          <div class="detail-sub" id="d-sub">LEAD-2026-0601-001</div>
-
-          <div class="detail-row">
-            <span class="detail-key">Personen</span>
-            <span class="detail-val" id="d-persons">6 Personen</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-key">Zielgebiet</span>
-            <span class="detail-val" id="d-dest">Marokko</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-key">Sprache</span>
-            <span class="detail-val" id="d-lang">🇩🇪 Deutsch</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-key">Budget</span>
-            <span class="detail-val green" id="d-budget">€8.000</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-key">Priorität</span>
-            <span class="detail-val high" id="d-prio">🔴 HOCH</span>
+          <div id="d-details" style="opacity:0.4">
+            <div class="detail-row"><span class="d-key">Persons</span><span class="d-val" id="d-persons">—</span></div>
+            <div class="detail-row"><span class="d-key">Destination</span><span class="d-val" id="d-dest">—</span></div>
+            <div class="detail-row"><span class="d-key">Language</span><span class="d-val" id="d-lang">—</span></div>
+            <div class="detail-row"><span class="d-key">Budget</span><span class="d-val gold" id="d-budget">—</span></div>
+            <div class="detail-row"><span class="d-key">Priority</span><span class="d-val red" id="d-prio">—</span></div>
+            <div class="detail-row"><span class="d-key">Assigned to</span><span class="d-val" id="d-assigned">—</span></div>
+            <div class="detail-row"><span class="d-key">Voice</span><span class="d-val" id="d-voice">—</span></div>
           </div>
 
-          <div class="upload-area" onclick="this.style.borderColor='#c8440a'">
+          <div class="upload-area" onclick="triggerUpload()">
             <div class="upload-icon">📎</div>
-            <div class="upload-text">Angebot hochladen (PNG/PDF)</div>
-            <div class="upload-sub">Klicken oder reinziehen</div>
+            <div class="upload-text">Upload Offer (PNG/PDF)</div>
+            <div class="upload-sub" id="upload-status">Click or drag file here</div>
+          </div>
+          <input type="file" id="file-input" style="display:none" accept=".png,.pdf,.jpg" onchange="handleFile(this)">
+
+          <div class="tips-box">
+            <div class="tips-label">Your Tips & Notes</div>
+            <textarea class="tips-input" id="tips-input" placeholder="e.g. Family better off with family room + suite instead of 3 rooms, saves €300..."></textarea>
           </div>
 
-          <div class="tips-area">
-            <div class="tips-label">Deine Tipps / Beobachtungen</div>
-            <textarea class="tips-input" placeholder="z.B. Familie lieber Familienzimmer + Suite statt 3 Zimmer..."></textarea>
-          </div>
-
-          <button class="send-btn">
-            ▶ ANGEBOT SENDEN
+          <button class="send-btn" id="send-btn" onclick="triggerSend()">
+            ▶ SEND OFFER + VOICE
           </button>
         </div>
 
         <!-- MINI STATS -->
-        <div class="mini-stats">
-          <div class="mini-title">Heute auf einen Blick</div>
-          <div class="mini-row">
-            <span class="mini-label">🇩🇪 Deutsch</span>
-            <span class="mini-val">5 Leads</span>
-          </div>
-          <div class="mini-row">
-            <span class="mini-label">🇳🇱 Holländisch</span>
-            <span class="mini-val">4 Leads</span>
-          </div>
-          <div class="mini-row">
-            <span class="mini-label">🇫🇷 Französisch</span>
-            <span class="mini-val">3 Leads</span>
-          </div>
-          <div class="mini-row">
-            <span class="mini-label">🇲🇦 Marokko</span>
-            <span class="mini-val" style="color:var(--accent)">8 Leads</span>
-          </div>
-          <div class="mini-row">
-            <span class="mini-label">🇪🇬 Ägypten</span>
-            <span class="mini-val" style="color:var(--accent2)">3 Leads</span>
-          </div>
-          <div class="mini-row">
-            <span class="mini-label">🇹🇳 Tunesien</span>
-            <span class="mini-val" style="color:#7b5ea7">1 Lead</span>
-          </div>
+        <div class="mini-panel" style="margin-bottom:14px">
+          <div class="mini-title">Today's Overview</div>
+          <div class="mini-row"><span class="mini-label">🇩🇪 German</span><span class="mini-val">3 leads</span></div>
+          <div class="mini-row"><span class="mini-label">🇳🇱 Dutch</span><span class="mini-val">3 leads</span></div>
+          <div class="mini-row"><span class="mini-label">🇫🇷 French</span><span class="mini-val">2 leads</span></div>
+          <div class="mini-row"><span class="mini-label">🇸🇦 Arabic</span><span class="mini-val">1 lead</span></div>
+          <div class="mini-row"><span class="mini-label">🇲🇦 Morocco</span><span class="mini-val" style="color:var(--terra)">5 leads</span></div>
+          <div class="mini-row"><span class="mini-label">🇪🇬 Egypt</span><span class="mini-val" style="color:var(--green)">2 leads</span></div>
         </div>
 
+        <!-- SECRET BUTTON -->
+        <button class="secret-btn" onclick="triggerSurprise()">
+          😄 SECRET: Hicham & Lamia → Holland!
+        </button>
       </div>
     </div>
-  </main>
-</div>
+  </div>
+
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 <script>
-let leadCount = 1;
-function selectLead(btn, name, persons, dest, lang, budget, prio) {
-  document.getElementById('d-name').textContent = name;
-  document.getElementById('d-sub').textContent = 'LEAD-2026-0601-00' + (++leadCount);
-  document.getElementById('d-persons').textContent = persons;
-  document.getElementById('d-dest').textContent = dest;
-  document.getElementById('d-lang').textContent = lang;
-  document.getElementById('d-budget').textContent = budget;
-  document.getElementById('d-prio').textContent = prio === 'HOCH' ? '🔴 HOCH' : prio === 'MITTEL' ? '🟡 MITTEL' : '🟢 NORMAL';
+// DATE
+document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
 
-  // Highlight selected row
-  document.querySelectorAll('.lead-row').forEach(r => r.style.background = '');
-  btn.closest('.lead-row').style.background = 'rgba(200,68,10,0.05)';
-
-  // Scroll to detail on mobile
-  document.getElementById('detail-panel').scrollIntoView({behavior:'smooth', block:'nearest'});
+// NAVIGATION
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  event.target.classList.add('active');
 }
 
-// Tab switching
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-  });
-});
+// SELECT LEAD
+let selectedLead = null;
+function selectLead(row, name, id, info, dest, lang, prio, assigned, voice) {
+  document.querySelectorAll('.lead-row').forEach(r => r.classList.remove('selected'));
+  row.classList.add('selected');
+  selectedLead = {name, id, info, dest, lang, prio, assigned, voice};
 
-// Nav items
-document.querySelectorAll('.nav-item').forEach(item => {
-  item.addEventListener('click', () => {
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    item.classList.add('active');
-  });
-});
+  document.getElementById('d-name').textContent = name;
+  document.getElementById('d-id').textContent = id;
+  document.getElementById('d-persons').textContent = info.split('·')[0].trim();
+  document.getElementById('d-dest').textContent = dest;
+  document.getElementById('d-lang').textContent = lang;
+  document.getElementById('d-budget').textContent = '€' + info.split('€')[1];
+  document.getElementById('d-prio').textContent = prio === 'HIGH' ? '🔴 HIGH' : prio === 'MEDIUM' ? '🟡 MEDIUM' : '🟢 NORMAL';
+  document.getElementById('d-assigned').textContent = assigned;
+  document.getElementById('d-voice').textContent = voice;
+  document.getElementById('d-details').style.opacity = '1';
 
-// Send button
-document.querySelector('.send-btn').addEventListener('click', () => {
-  const name = document.getElementById('d-name').textContent;
-  document.querySelector('.send-btn').textContent = '✓ GESENDET AN ' + name.toUpperCase();
-  document.querySelector('.send-btn').style.background = '#2d6a4f';
-  setTimeout(() => {
-    document.querySelector('.send-btn').innerHTML = '▶ ANGEBOT SENDEN';
-    document.querySelector('.send-btn').style.background = '';
-  }, 3000);
-});
+  addTerminalLine('info', `Lead selected: ${name} → Assigned to ${assigned}`);
+}
+
+// FILTER
+function filterLeads(filter, tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  document.querySelectorAll('.lead-row').forEach(row => {
+    if (filter === 'all') row.style.display = '';
+    else row.style.display = row.dataset.prio === filter ? '' : 'none';
+  });
+}
+
+// UPLOAD
+function triggerUpload() { document.getElementById('file-input').click(); }
+function handleFile(input) {
+  if (input.files[0]) {
+    document.getElementById('upload-status').textContent = '✓ ' + input.files[0].name;
+    addTerminalLine('ok', `Offer uploaded: ${input.files[0].name}`);
+    showToast('📎 Offer uploaded successfully!');
+  }
+}
+
+// SEND
+function sendLead(btn, name) {
+  btn.textContent = '✓ Sent';
+  btn.style.background = 'var(--green)';
+  btn.style.color = 'white';
+  btn.style.border = 'none';
+  addTerminalLine('ok', `Lead processing: ${name}...`);
+  setTimeout(() => addTerminalLine('ok', `Claude generating voice text for ${name}...`), 800);
+  setTimeout(() => addTerminalLine('ok', `ElevenLabs voice generated ✓`), 1600);
+  setTimeout(() => addTerminalLine('ok', `Email sent to client ✓`), 2400);
+  setTimeout(() => addTerminalLine('ok', `Google Sheets updated ✓`), 3200);
+  showToast(`✓ Offer sent to ${name}!`);
+}
+
+function triggerSend() {
+  if (!selectedLead) { showToast('⚠️ Please select a lead first!'); return; }
+  const btn = document.getElementById('send-btn');
+  btn.classList.add('sent');
+  btn.textContent = '✓ SENT SUCCESSFULLY!';
+  addTerminalLine('ok', `Processing: ${selectedLead.name}...`);
+  setTimeout(() => addTerminalLine('ok', `Claude writing voice message in ${selectedLead.lang}...`), 600);
+  setTimeout(() => addTerminalLine('ok', `ElevenLabs: ${selectedLead.voice} voice generated ✓`), 1400);
+  setTimeout(() => addTerminalLine('ok', `Email sent to ${selectedLead.assigned} ✓`), 2200);
+  setTimeout(() => addTerminalLine('ok', `Google Sheets row updated ✓`), 3000);
+  setTimeout(() => { btn.classList.remove('sent'); btn.textContent = '▶ SEND OFFER + VOICE'; }, 5000);
+  showToast(`🚀 Offer sent for ${selectedLead.name}!`);
+  document.getElementById('stat-sent').textContent = parseInt(document.getElementById('stat-sent').textContent) + 1;
+}
+
+// SIMULATE LEAD
+let leadCounter = 8;
+function addTestLead() {
+  const leads = [
+    {name:'Familie Weber', lang:'🇩🇪', dest:'Morocco', prio:'high', persons:'4P · 1W · €4,500'},
+    {name:'Mevrouw Bakker', lang:'🇳🇱', dest:'Morocco', prio:'high', persons:'3P · 10D · €3,800'},
+    {name:'M. Leblanc', lang:'🇫🇷', dest:'Egypt', prio:'mid', persons:'2P · 1W · €2,500'},
+  ];
+  const lead = leads[Math.floor(Math.random() * leads.length)];
+  const id = `LEAD-2026-0602-00${leadCounter++}`;
+
+  const container = document.getElementById('leads-container');
+  const firstSection = container.querySelector('.section-label');
+  const row = document.createElement('div');
+  row.className = 'lead-row';
+  row.dataset.prio = lead.prio;
+  row.style.animation = 'fadeIn 0.5s ease';
+  row.innerHTML = `
+    <div class="prio prio-h" style="animation:pulse 1s infinite"></div>
+    <div><div class="lead-name">${lead.name} <span style="background:#ef4444;color:white;font-size:9px;padding:1px 5px;border-radius:3px;margin-left:4px">NEW</span></div><div class="lead-info">${lead.persons} · ${lead.lang}</div></div>
+    <span class="badge badge-mar">${lead.dest}</span>
+    <span class="badge status-new">New</span>
+    <button class="btn-send" onclick="event.stopPropagation();sendLead(this,'${lead.name}')">▶ Send</button>
+  `;
+  row.onclick = () => selectLead(row, lead.name, id, lead.persons, lead.dest, lead.lang, 'HIGH', 'Hicham', 'Lamia');
+  container.insertBefore(row, firstSection.nextSibling);
+
+  const count = parseInt(document.getElementById('stat-new').textContent) + 1;
+  document.getElementById('stat-new').textContent = count;
+  document.getElementById('lead-count').textContent = count;
+
+  addTerminalLine('warn', `🔴 NEW LEAD: ${lead.name} | ${lead.dest} | ${lead.lang}`);
+  showToast(`🔴 New Lead: ${lead.name}!`);
+}
+
+// SURPRISE
+function triggerSurprise() {
+  addTerminalLine('warn', '😄 SECRET LEAD ACTIVATED...');
+  setTimeout(() => addTerminalLine('info', 'Name: Hicham & Lamia'), 500);
+  setTimeout(() => addTerminalLine('info', 'Destination: Holland → Amsterdam!'), 1000);
+  setTimeout(() => addTerminalLine('warn', 'Assigned to: SAMIR 😄'), 1500);
+  setTimeout(() => addTerminalLine('ok', 'Sending surprise offer to Samir... ✓'), 2000);
+  showToast('😄 Surprise sent to Samir! Hicham & Lamia → Holland!');
+}
+
+// TERMINAL
+function addTerminalLine(type, text) {
+  const term = document.getElementById('terminal');
+  const line = document.createElement('div');
+  line.className = 'term-line';
+  const icons = {ok:'✓', err:'✗', info:'→', warn:'!'};
+  line.innerHTML = `<span class="term-${type}">${icons[type]}</span><span>${text}</span>`;
+  term.appendChild(line);
+  term.scrollTop = term.scrollHeight;
+}
+
+// TOAST
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3500);
+}
 </script>
 </body>
 </html>
